@@ -7,10 +7,14 @@ namespace roguelitri.Model.Scenes;
 
 public abstract class Scene
 {
-    public abstract void Load(ContentManager content);
+    public abstract void Initialize();
 
     public abstract void Update(GameTime gameTime);
 
-    public abstract void Draw(SpriteBatch spriteBatch);
+    public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+
+    public virtual void Dispose()
+    {
+    }
 
 }

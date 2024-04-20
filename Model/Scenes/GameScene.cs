@@ -1,24 +1,31 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
+using roguelitri.Service;
 
 namespace roguelitri.Model.Scenes;
 
 public class GameScene : Scene
 {
-    public override void Load(ContentManager content)
+    public override void Initialize()
     {
-        throw new NotImplementedException();
     }
 
     public override void Update(GameTime gameTime)
     {
-        throw new NotImplementedException();
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        throw new NotImplementedException();
+        spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap);
+
+        spriteBatch.DrawString(Resources.Fonts.Arcade, "SCORE: 0", new Vector2(10, 10), Color.White);
+        
+        spriteBatch.End();
+    }
+
+    public override void Dispose()
+    {
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.BitmapFonts;
+using roguelitri.Model.Scenes;
 using roguelitri.Service;
 
 namespace roguelitri;
@@ -18,7 +20,7 @@ public class Game1 : Game
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        IsMouseVisible = true;
+        IsMouseVisible = false;
         _globalKeys = new GlobalKeys(this);
     }
 
@@ -38,12 +40,14 @@ public class Game1 : Game
     {
 
         Resources.LoadContent(Content);
-
-        MediaPlayer.Play(Resources.Music.TestSong);
+        
         // TODO: use this.Content to load your game content here
 
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        
+        SceneManager.SetScene(new TitleScene());
+        
         base.LoadContent();
-
     }
 
     protected override void Update(GameTime gameTime)
@@ -51,24 +55,15 @@ public class Game1 : Game
         
         _globalKeys.Update();
 
-        // TODO: Add your update logic here
+        SceneManager.Update(gameTime);
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-        GraphicsDevice.Clear(Color.LightGray);
-
-        _spriteBatch.DrawString(Resources.Fonts.IbmVgaFont, "Roguelitri SNAPSHOT áéíóçñ - àç", new Vector2(10, 10), Color.White);
-        _spriteBatch.DrawString(Resources.Fonts.Arcade, "COPYRIGHT 2024 ENLOARTOLAMEZA STUDIOS", new Vector2(10, 30), Color.White);
-
-        // TODO: Add your drawing code here
+        GraphicsDevice.Clear(Color.Black);
+        SceneManager.Draw(gameTime, _spriteBatch);
 
         base.Draw(gameTime);
     }
@@ -76,7 +71,7 @@ public class Game1 : Game
     protected override void OnExiting(object sender, EventArgs args)
     {
         base.OnExiting(sender, args);
-        Console.WriteLine("Another fine release of Enloartolameza Studios!");
+        Console.WriteLine("Another fine release from Enloartolameza Studios!");
         Environment.Exit(Environment.ExitCode);
     }
 }
