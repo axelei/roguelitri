@@ -12,8 +12,7 @@ public class TitleScene : Scene
 {
     public override void Initialize()
     {
-        MediaPlayer.Play(Resources.Music.TestSong);
-        MediaPlayer.Volume = 0.3f;
+        MusicManager.Play(Resources.Music.TestSong);
     }
 
     public override void Update(GameTime gameTime)
@@ -36,6 +35,6 @@ public class TitleScene : Scene
 
     public override void Dispose()
     {
-        MediaPlayer.Stop();
+        MusicManager.Stop();
     }
 }
