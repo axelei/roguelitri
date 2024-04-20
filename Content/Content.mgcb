@@ -10,22 +10,47 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:pipelines\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
-#begin gfx/fonts/arcade.png
+#begin fonts/arcadepix_0.png
 /importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=0,0,0,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gfx/fonts/arcade.png
+/build:fonts/arcadepix_0.png
 
-#begin gfx/fonts/ibmVga.png
+#begin fonts/arcadepix.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:fonts/arcadepix.fnt
+
+#begin fonts/ibmVga_0.png
 /importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=0,0,0,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gfx/fonts/ibmVga.png
+/build:fonts/ibmVga_0.png
+
+#begin fonts/ibmVga.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:fonts/ibmVga.fnt
+
+#begin music/test.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/test.ogg
 
