@@ -13,3 +13,19 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin gfx/fonts/arcade.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:gfx/fonts/arcade.png
+
+#begin gfx/fonts/ibmVga.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:gfx/fonts/ibmVga.png
+

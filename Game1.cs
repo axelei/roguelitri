@@ -1,21 +1,27 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using roguelitri.Service;
 
 namespace roguelitri;
 
-public class Game1 : Microsoft.Xna.Framework.Game
+public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
+    public GraphicsDeviceManager Graphics { get; }
     private SpriteBatch _spriteBatch;
+
+    private SpriteFont _ibmVgaFont;
+
+    private readonly GlobalKeys _globalKeys;
 
     public Game1()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+        Graphics.GraphicsProfile = GraphicsProfile.HiDef;
         IsMouseVisible = true;
+        _globalKeys = new GlobalKeys(this);
     }
 
     protected override void Initialize()
@@ -28,27 +34,34 @@ public class Game1 : Microsoft.Xna.Framework.Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+        
+        _ibmVgaFont = Content.Load<SpriteFont>("gfx/fonts/ibmVga");
+        
         // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+        base.Update(gameTime);
+        
+        _globalKeys.Update();
 
         // TODO: Add your update logic here
 
-        base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        base.Draw(gameTime);
+        
+        _spriteBatch.Begin();
 
+        GraphicsDevice.Clear(Color.White);
+        _spriteBatch.DrawString(_ibmVgaFont, "Roguelitri SNAPSHOT áéíóçñ", new Vector2(100, 100), Color.Black);
+
+        _spriteBatch.End();
         // TODO: Add your drawing code here
 
-        base.Draw(gameTime);
     }
     
     protected override void OnExiting(object sender, EventArgs args)
