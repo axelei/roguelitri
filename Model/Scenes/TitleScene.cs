@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.BitmapFonts;
+using MonoGameGum.GueDeriving;
+using RenderingLibrary;
 using roguelitri.Service;
 using roguelitri.util;
 
@@ -12,6 +12,25 @@ public class TitleScene : Scene
 {
     public override void Initialize()
     {
+        var titleText = new TextRuntime
+        {
+            UseCustomFont = true,
+            CustomFontFile = Resources.Fonts.IbmVgaFont,
+            Text = "Roguelitri tech demo - press space to start! - áéíóçñ - àç",
+            X = 100,
+            Y = 10
+        };
+        titleText.AddToManagers(SystemManagers.Default, null);
+        var copyrightText = new TextRuntime
+        {
+            UseCustomFont = true,
+            CustomFontFile = Resources.Fonts.Arcade,
+            Text = "COPYRIGHT 2024 ENLOARTOLAMEZA STUDIOS",
+            X = 100,
+            Y = 30
+        };
+        copyrightText.AddToManagers(SystemManagers.Default, null);
+        
         MusicManager.Play(Resources.Music.TestSong);
     }
 
@@ -27,9 +46,6 @@ public class TitleScene : Scene
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap);
 
-        spriteBatch.DrawString(Resources.Fonts.IbmVgaFont, "Roguelitri SNAPSHOT áéíóçñ - àç", new Vector2(10, 10), Color.White);
-        spriteBatch.DrawString(Resources.Fonts.Arcade, "COPYRIGHT 2024 ENLOARTOLAMEZA STUDIOS", new Vector2(10, 30), Color.White);
-        
         spriteBatch.End();
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RenderingLibrary;
 using roguelitri.Model.Scenes;
 using roguelitri.Service;
 
@@ -28,6 +29,9 @@ public class Game1 : Game
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
         Graphics.ApplyChanges();
         
+        SystemManagers.Default = new SystemManagers(); 
+        SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
+        
         base.Initialize();
     }
 
@@ -46,6 +50,8 @@ public class Game1 : Game
     {
         _globalKeys.Update();
 
+        SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
+        
         SceneManager.Update(gameTime);
 
         base.Update(gameTime);
@@ -55,6 +61,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.Black);
         SceneManager.Draw(gameTime, _spriteBatch);
+        SystemManagers.Default.Draw();
 
         base.Draw(gameTime);
     }

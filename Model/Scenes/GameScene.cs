@@ -1,8 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.BitmapFonts;
-using roguelitri.Service;
 
 namespace roguelitri.Model.Scenes;
 
@@ -20,7 +17,7 @@ public class GameScene : Scene
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap);
 
-        spriteBatch.DrawString(Resources.Fonts.Arcade, "SCORE: 0", new Vector2(10, 10), Color.White);
+        //spriteBatch.DrawString(Resources.Fonts.Arcade, "SCORE: 0", new Vector2(10, 10), Color.White);
         
         spriteBatch.End();
     }

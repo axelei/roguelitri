@@ -10,43 +10,8 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:pipelines\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin fonts/arcadepix_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=0,0,0,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:fonts/arcadepix_0.png
-
-#begin fonts/arcadepix.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:fonts/arcadepix.fnt
-
-#begin fonts/ibmVga_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=0,0,0,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:fonts/ibmVga_0.png
-
-#begin fonts/ibmVga.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:fonts/ibmVga.fnt
 
 #begin music/test.ogg
 /importer:OggImporter
