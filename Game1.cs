@@ -12,18 +12,19 @@ public class Game1 : Game
     public GraphicsDeviceManager Graphics { get; }
     private SpriteBatch _spriteBatch;
 
-    private readonly GlobalKeys _globalKeys;
+    private readonly GlobalKeysManager _globalKeysManager;
 
     public Game1()
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
-        _globalKeys = new GlobalKeys(this);
+        _globalKeysManager = new GlobalKeysManager(this);
     }
 
     protected override void Initialize()
     {
+        
         Graphics.PreferredBackBufferWidth = 1280;
         Graphics.PreferredBackBufferHeight = 720;
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -37,7 +38,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        Resources.LoadContent(Content);
+        ResourceManager.LoadContent(Content);
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
@@ -48,7 +49,7 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        _globalKeys.Update();
+        _globalKeysManager.Update();
 
         SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
         
@@ -69,7 +70,7 @@ public class Game1 : Game
     protected override void OnExiting(object sender, EventArgs args)
     {
         base.OnExiting(sender, args);
-        Console.WriteLine("Another fine release from Enloartolameza Studios!");
+        Console.WriteLine(@"Another fine release from Enloartolameza Studios!");
         Environment.Exit(Environment.ExitCode);
     }
 }

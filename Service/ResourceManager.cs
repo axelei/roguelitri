@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace roguelitri.Service;
 
-public static class Resources
+public static class ResourceManager
 {
     public static class Fonts
     {

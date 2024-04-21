@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,14 +10,15 @@ using roguelitri.util;
 
 namespace roguelitri.Service;
 
-public class GlobalKeys
+public class GlobalKeysManager
 {
     
     private readonly Game1 _gameInstance;
     
-    public GlobalKeys(Game1 gameInstance)
+    public GlobalKeysManager(Game1 gameInstance)
     {
         _gameInstance = gameInstance;
+
     }
     
     public void Update()
@@ -45,9 +48,13 @@ public class GlobalKeys
             texture.SetData(backBuffer);
 
             using var stream = File.OpenWrite(filename);
+
             texture.SaveAsPng(stream, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight);
 
-            Console.WriteLine($"Wrote screenshot: {filename}");
+            // TODO make it use system culture or be able to change
+            Console.WriteLine(GeneralLangResource.Culture = CultureInfo.CurrentCulture);
+            Console.WriteLine(Thread.CurrentThread.CurrentCulture.Name);
+            Console.WriteLine(GeneralLangResource.wrote_screenshot_console_text, filename);
         }
         
     }

@@ -15,7 +15,7 @@ public class TitleScene : Scene
         var titleText = new TextRuntime
         {
             UseCustomFont = true,
-            CustomFontFile = Resources.Fonts.IbmVgaFont,
+            CustomFontFile = ResourceManager.Fonts.IbmVgaFont,
             Text = "Roguelitri tech demo - press space to start! - áéíóçñ - àç",
             X = 100,
             Y = 10
@@ -24,14 +24,14 @@ public class TitleScene : Scene
         var copyrightText = new TextRuntime
         {
             UseCustomFont = true,
-            CustomFontFile = Resources.Fonts.Arcade,
+            CustomFontFile = ResourceManager.Fonts.Arcade,
             Text = "COPYRIGHT 2024 ENLOARTOLAMEZA STUDIOS",
             X = 100,
             Y = 30
         };
         copyrightText.AddToManagers(SystemManagers.Default, null);
         
-        MusicManager.Play(Resources.Music.TestSong);
+        MusicManager.Play(ResourceManager.Music.TestSong);
     }
 
     public override void Update(GameTime gameTime)
