@@ -9,7 +9,8 @@ namespace roguelitri.util;
 public static class Input
 {
 
-    private static Keys[] _previousPressedQuery;
+    private static Keys[] _previousKeyPressedQuery;
+    private static Tuple<PlayerIndex, Buttons[]> _previousButtonPressedQuery;
     public static bool KeyPressed(params Microsoft.Xna.Framework.Input.Keys[] keys)
     {
         return keys.All(key => Keyboard.GetState().IsKeyDown(key));
@@ -17,51 +18,76 @@ public static class Input
 
     public static bool HasBeenPressed(params Keys[] keys)
     {
-        if (keys.Any(key => Keyboard.GetState().IsKeyUp(key)))
+        var keyUp = keys.Any(key => Keyboard.GetState().IsKeyUp(key));
+        var keyDown = keys.All(key => Keyboard.GetState().IsKeyDown(key));
+
+        if (keyUp || _previousKeyPressedQuery != null && keys.SequenceEqual(_previousKeyPressedQuery))
         {
-            _previousPressedQuery = null;
-        }
-        if (_previousPressedQuery != null && keys.SequenceEqual(_previousPressedQuery))
-        {
+            _previousKeyPressedQuery = null;
             return false;
         }
-        if (keys.All(key => Keyboard.GetState().IsKeyDown(key)))
+
+        if (keyDown)
         {
-            _previousPressedQuery = keys;
+            _previousKeyPressedQuery = keys;
             return true;
         }
         return false;
+
     }
+
+    public static bool HasBeenPressed(PlayerIndex playerIndex, params Buttons[] buttons)
+    {
+        var buttonNotPressed = buttons.Any(button => !ButtonPressed(GetByButton(playerIndex, button)));
+        var buttonPressed = buttons.Any(button => ButtonPressed(GetByButton(playerIndex, button)));
+        var previousQueryMatch = _previousButtonPressedQuery != null 
+                                 && _previousButtonPressedQuery.Item1 == playerIndex 
+                                 && _previousButtonPressedQuery.Item2.SequenceEqual(buttons);
+
+        if (buttonNotPressed)
+        {
+            _previousButtonPressedQuery = null;
+        }
+
+        if (previousQueryMatch)
+        {
+            return false;
+        }
+
+        if (buttonPressed)
+        {
+            _previousButtonPressedQuery = new Tuple<PlayerIndex, Buttons[]>(playerIndex, buttons);
+        }
+
+        return false;
+    }
+
 
     public static bool ButtonPressed(PlayerIndex playerIndex, params Buttons[] buttons)
     {
-        foreach (var button in buttons)
-        {
-            ButtonState element = button switch
-            {
-                Buttons.DPadUp => GamePad.GetState(playerIndex).DPad.Up,
-                Buttons.DPadDown => GamePad.GetState(playerIndex).DPad.Down,
-                Buttons.DPadLeft => GamePad.GetState(playerIndex).DPad.Left,
-                Buttons.DPadRight => GamePad.GetState(playerIndex).DPad.Right,
-                Buttons.Start => GamePad.GetState(playerIndex).Buttons.Start,
-                Buttons.Back => GamePad.GetState(playerIndex).Buttons.Back,
-                Buttons.LeftStick => GamePad.GetState(playerIndex).Buttons.LeftStick,
-                Buttons.RightStick => GamePad.GetState(playerIndex).Buttons.RightStick,
-                Buttons.LeftShoulder => GamePad.GetState(playerIndex).Buttons.LeftShoulder,
-                Buttons.RightShoulder => GamePad.GetState(playerIndex).Buttons.RightShoulder,
-                Buttons.BigButton => GamePad.GetState(playerIndex).Buttons.BigButton,
-                Buttons.A => GamePad.GetState(playerIndex).Buttons.A,
-                Buttons.B => GamePad.GetState(playerIndex).Buttons.B,
-                Buttons.X => GamePad.GetState(playerIndex).Buttons.X,
-                Buttons.Y => GamePad.GetState(playerIndex).Buttons.Y,
-                _ => throw new ArgumentOutOfRangeException(nameof(button), button,
-                    "Specified input does not seem to exist or supported for this controller.")
-            };
-            if (element == ButtonState.Released)
-            {
-                return false;
-            }
-        }
-        return true;
+        return buttons.Select(button => GetByButton(playerIndex, button)).All(element => element != ButtonState.Released);
+    }
+
+    public static bool AnyKeyPressed()
+    {
+        return Enum.GetValues(typeof(Keys)).Cast<Keys>().Any(keys => HasBeenPressed(keys)) 
+                             || Enumerable.Range(0, GamePad.MaximumGamePadCount)
+                                 .Any(i => Enum.GetValues(typeof(Buttons)).Cast<Buttons>()
+                                     .Any(button => ButtonPressed(GetByButton((PlayerIndex)i, button))));
+    }
+
+    public static Keys[] KeysPressed()
+    {
+        return Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(key => HasBeenPressed(key)).ToArray();
+    }
+
+    private static ButtonState GetByButton(PlayerIndex playerIndex, Buttons button)
+    {
+        return GamePad.GetState(playerIndex).IsButtonDown(button) ? ButtonState.Pressed : ButtonState.Released;
+    }
+
+    private static bool ButtonPressed(ButtonState buttonState)
+    {
+        return buttonState == ButtonState.Pressed;
     }
 }

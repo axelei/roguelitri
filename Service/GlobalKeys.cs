@@ -11,7 +11,6 @@ namespace roguelitri.Service;
 public class GlobalKeys
 {
     
-
     private readonly Game1 _gameInstance;
     
     public GlobalKeys(Game1 gameInstance)
@@ -30,28 +29,25 @@ public class GlobalKeys
         // Full screen
         if ((Input.KeyPressed(Keys.LeftAlt) || Input.KeyPressed(Keys.RightAlt)) && Input.KeyPressed(Keys.Enter))
         {
-            var graphics = _gameInstance.Graphics;
-            graphics.ToggleFullScreen();
+            _gameInstance.Graphics.ToggleFullScreen();
         }
 
         if (Input.HasBeenPressed(Keys.F12))
         {
-            var filename = Assembly.GetExecutingAssembly().GetName().Name + "_" + GameUtils.EpochMillis() + ".png";
+            var filename = $"{Assembly.GetExecutingAssembly().GetName().Name}_{GameUtils.EpochMillis()}.png";
             var graphics = _gameInstance.Graphics;
-            int w = graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
-            int h = graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
-            int[] backBuffer = new int[w * h];
-            
+            var presentationParams = graphics.GraphicsDevice.PresentationParameters;
+
+            int[] backBuffer = new int[presentationParams.BackBufferWidth * presentationParams.BackBufferHeight];
             graphics.GraphicsDevice.GetBackBufferData(backBuffer);
-            Texture2D texture = new Texture2D(graphics.GraphicsDevice, w, h, false, graphics.GraphicsDevice.PresentationParameters.BackBufferFormat);
+
+            using var texture = new Texture2D(graphics.GraphicsDevice, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight, false, presentationParams.BackBufferFormat);
             texture.SetData(backBuffer);
-            Stream stream = File.OpenWrite(filename);
-            texture.SaveAsPng(stream, w, h);
-            
-            stream.Dispose();
-            texture.Dispose();
-            
-            Console.WriteLine("Wrote screenshot: " + filename);
+
+            using var stream = File.OpenWrite(filename);
+            texture.SaveAsPng(stream, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight);
+
+            Console.WriteLine($"Wrote screenshot: {filename}");
         }
         
     }

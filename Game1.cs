@@ -1,9 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.BitmapFonts;
 using roguelitri.Model.Scenes;
 using roguelitri.Service;
 
@@ -26,23 +23,18 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-
         Graphics.PreferredBackBufferWidth = 1280;
         Graphics.PreferredBackBufferHeight = 720;
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
         Graphics.ApplyChanges();
-        // TODO: Add your initialization logic here
-
+        
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-
         Resources.LoadContent(Content);
         
-        // TODO: use this.Content to load your game content here
-
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
         SceneManager.SetScene(new TitleScene());
@@ -52,7 +44,6 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        
         _globalKeys.Update();
 
         SceneManager.Update(gameTime);
