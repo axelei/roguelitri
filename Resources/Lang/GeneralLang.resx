@@ -18,7 +18,4 @@
     <data name="press_any_button_to_start" xml:space="preserve">
         <value>Press any button/key to continue</value>
     </data>
-    <data name="wrote_screenshot_console_text" xml:space="preserve">
-        <value>Wrote screenshot: {0}</value>
-    </data>
 </root>

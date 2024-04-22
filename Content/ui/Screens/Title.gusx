@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScreenSave xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Title</Name>
+  <State>
+    <Name>Default</Name>
+    <Variable>
+      <Type>float</Type>
+      <Name>CircleInstance.X</Name>
+      <Value xsi:type="xsd:float">296.6667</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>CircleInstance.Y</Name>
+      <Value xsi:type="xsd:float">319.333344</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>PolygonInstance.X</Name>
+      <Value xsi:type="xsd:float">411.6667</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>PolygonInstance.Y</Name>
+      <Value xsi:type="xsd:float">138.333344</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>pressAnyKey.Blue</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>pressAnyKey.CustomFontFile</Name>
+      <Value xsi:type="xsd:string">../fonts/ibmVga.fnt</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>pressAnyKey.Green</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>pressAnyKey.Guide</Name>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>pressAnyKey.Height Units</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>HorizontalAlignment</Type>
+      <Name>pressAnyKey.HorizontalAlignment</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>pressAnyKey.Parent</Name>
+      <Value xsi:type="xsd:string"></Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>pressAnyKey.Red</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>pressAnyKey.Rotation</Name>
+      <Value xsi:type="xsd:float">11.9167747</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>State</Type>
+      <Name>pressAnyKey.State</Name>
+      <Value xsi:type="xsd:string">Default</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>pressAnyKey.Text</Name>
+      <Value xsi:type="xsd:string">Press any key to continue</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>TextOverflowHorizontalMode</Type>
+      <Name>pressAnyKey.TextOverflowHorizontalMode</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>TextOverflowVerticalMode</Type>
+      <Name>pressAnyKey.TextOverflowVerticalMode</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>bool</Type>
+      <Name>pressAnyKey.UseCustomFont</Name>
+      <Value xsi:type="xsd:boolean">true</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>pressAnyKey.VerticalAlignment</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>pressAnyKey.Width</Name>
+      <Value xsi:type="xsd:float">253</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>pressAnyKey.Width Units</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>pressAnyKey.X</Name>
+      <Value xsi:type="xsd:float">166</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>HorizontalAlignment</Type>
+      <Name>pressAnyKey.X Origin</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>pressAnyKey.X Units</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>pressAnyKey.Y</Name>
+      <Value xsi:type="xsd:float">147</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>pressAnyKey.Y Origin</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>pressAnyKey.Y Units</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>RectangleInstance.Height</Name>
+      <Value xsi:type="xsd:float">55</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>RectangleInstance.Width</Name>
+      <Value xsi:type="xsd:float">134</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>RectangleInstance.X</Name>
+      <Value xsi:type="xsd:float">82</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>RectangleInstance.Y</Name>
+      <Value xsi:type="xsd:float">353</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <VariableList xsi:type="VariableListSaveOfVector2">
+      <Name>PolygonInstance.Points</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value>
+        <Vector2>
+          <X>-32</X>
+          <Y>-32</Y>
+        </Vector2>
+        <Vector2>
+          <X>32</X>
+          <Y>-32</Y>
+        </Vector2>
+        <Vector2>
+          <X>81.99999</X>
+          <Y>-2</Y>
+        </Vector2>
+        <Vector2>
+          <X>99.6666641</X>
+          <Y>91.66667</Y>
+        </Vector2>
+        <Vector2>
+          <X>32</X>
+          <Y>32</Y>
+        </Vector2>
+        <Vector2>
+          <X>-32</X>
+          <Y>32</Y>
+        </Vector2>
+        <Vector2>
+          <X>-32</X>
+          <Y>-32</Y>
+        </Vector2>
+      </Value>
+    </VariableList>
+  </State>
+  <Instance>
+    <Name>pressAnyKey</Name>
+    <BaseType>Text</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>CircleInstance</Name>
+    <BaseType>Circle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>PolygonInstance</Name>
+    <BaseType>Polygon</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>RectangleInstance</Name>
+    <BaseType>Rectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+    <Locked>true</Locked>
+  </Instance>
+  <Behaviors />
+</ScreenSave>

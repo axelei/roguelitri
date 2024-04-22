@@ -1,4 +1,6 @@
 ﻿using System;
+using Gum.DataTypes;
+using Gum.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RenderingLibrary;
@@ -9,7 +11,8 @@ namespace roguelitri;
 
 public class Game1 : Game
 {
-    public GraphicsDeviceManager Graphics { get; }
+    public static GraphicsDeviceManager Graphics { get; private set; }
+    public static GumProjectSave GumProject { get; private set; }
     private SpriteBatch _spriteBatch;
 
     private readonly GlobalKeysManager _globalKeysManager;
@@ -25,6 +28,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         
+        Logger.Initialize();
+        
         Graphics.PreferredBackBufferWidth = 1280;
         Graphics.PreferredBackBufferHeight = 720;
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -32,6 +37,11 @@ public class Game1 : Game
         
         SystemManagers.Default = new SystemManagers(); 
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
+        
+        GumProject = GumProjectSave.Load("ui/roguelitri.gumx", out GumLoadResult result);
+        result.ErrorMessage.Length.ToString();
+        ObjectFinder.Self.GumProjectSave = GumProject;
+        GumProject.Initialize();
         
         base.Initialize();
     }
@@ -70,7 +80,8 @@ public class Game1 : Game
     protected override void OnExiting(object sender, EventArgs args)
     {
         base.OnExiting(sender, args);
-        Console.WriteLine(@"Another fine release from Enloartolameza Studios!");
+        Console.WriteLine("Another fine release from Enloartolameza Studios!");
+        Logger.Dispose();
         Environment.Exit(Environment.ExitCode);
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,13 +29,14 @@ public class GlobalKeysManager
         // Full screen
         if ((Input.KeyPressed(Keys.LeftAlt) || Input.KeyPressed(Keys.RightAlt)) && Input.KeyPressed(Keys.Enter))
         {
-            _gameInstance.Graphics.ToggleFullScreen();
+            Game1.Graphics.ToggleFullScreen();
         }
 
+        // Screenshot
         if (Input.HasBeenPressed(Keys.F12))
         {
-            var filename = $"{Assembly.GetExecutingAssembly().GetName().Name}_{GameUtils.EpochMillis()}.png";
-            var graphics = _gameInstance.Graphics;
+            var filename = $"{Misc.AppName}_{GameUtils.EpochMillis()}.png";
+            var graphics = Game1.Graphics;
             var presentationParams = graphics.GraphicsDevice.PresentationParameters;
 
             int[] backBuffer = new int[presentationParams.BackBufferWidth * presentationParams.BackBufferHeight];
@@ -51,7 +49,7 @@ public class GlobalKeysManager
 
             texture.SaveAsPng(stream, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight);
 
-            Console.WriteLine(GeneralLangResource.wrote_screenshot_console_text, filename);
+            Logger.Log("Wrote screenshot: " + filename);
         }
         
     }

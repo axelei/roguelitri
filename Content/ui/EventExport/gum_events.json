@@ -1,0 +1,48 @@
+{
+  "UserEvents": {
+    "axele": [
+      {
+        "NewName": "Title",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2024-04-22T13:16:02.7114238Z"
+      },
+      {
+        "NewName": "Title.TextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2024-04-22T13:17:27.7184423Z"
+      },
+      {
+        "NewName": "Title.Presiona cualquier tecla para continuar",
+        "OldName": "Title.TextInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2024-04-22T13:18:48.862349Z"
+      },
+      {
+        "NewName": "Title.CircleInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2024-04-22T13:41:36.2555041Z"
+      },
+      {
+        "NewName": "Title.PolygonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2024-04-22T13:41:40.19176Z"
+      },
+      {
+        "NewName": "Title.RectangleInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2024-04-22T13:49:16.0508452Z"
+      }
+    ]
+  }
+}

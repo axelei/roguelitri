@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Linq;
+using Gum.DataTypes;
+using Gum.Wireframe;
+using GumRuntime;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Service;
 using roguelitri.util;
@@ -10,26 +13,11 @@ namespace roguelitri.Model.Scenes;
 
 public class TitleScene : Scene
 {
+    private GraphicalUiElement _screen;
+    
     public override void Initialize()
     {
-        var titleText = new TextRuntime
-        {
-            UseCustomFont = true,
-            CustomFontFile = ResourceManager.Fonts.IbmVgaFont,
-            Text = "Roguelitri tech demo - press space to start! - áéíóçñ - àç",
-            X = 100,
-            Y = 10
-        };
-        titleText.AddToManagers(SystemManagers.Default, null);
-        var copyrightText = new TextRuntime
-        {
-            UseCustomFont = true,
-            CustomFontFile = ResourceManager.Fonts.Arcade,
-            Text = "COPYRIGHT 2024 ENLOARTOLAMEZA STUDIOS",
-            X = 100,
-            Y = 30
-        };
-        copyrightText.AddToManagers(SystemManagers.Default, null);
+        _screen = Game1.GumProject.Screens.First().ToGraphicalUiElement(SystemManagers.Default, addToManagers:true);
         
         MusicManager.Play(ResourceManager.Music.TestSong);
     }
@@ -51,6 +39,7 @@ public class TitleScene : Scene
 
     public override void Dispose()
     {
+        _screen.RemoveFromManagers();
         MusicManager.Stop();
     }
 }

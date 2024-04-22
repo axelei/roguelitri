@@ -15,9 +15,6 @@
         <value>Menué prinsipé</value>
     </data>
     <data name="press_any_button_to_start" xml:space="preserve">
-        <value>Pulsé cualquiére button per conntinuer</value>
-    </data>
-    <data name="wrote_screenshot_console_text" xml:space="preserve">
-        <value>Capturé escrituré: {0}</value>
+        <value>Pulsez cualquiére button per conntinuer</value>
     </data>
 </root>
