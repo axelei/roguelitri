@@ -74,13 +74,4 @@ internal class GeneralLangResource {
             return ResourceManager.GetString("press_any_button_to_start", resourceCulture);
         }
     }
-    
-    /// <summary>
-    ///   Looks up a localized string similar to Wrote screenshot: {0}.
-    /// </summary>
-    internal static string wrote_screenshot_text {
-        get {
-            return ResourceManager.GetString("wrote_screenshot_text", resourceCulture);
-        }
-    }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace roguelitri.util;
+namespace roguelitri.Util;
 
 public static class GameUtils
 {

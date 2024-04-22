@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using roguelitri.util;
 
-namespace roguelitri.Service;
+namespace roguelitri.Util;
 
 public static class Logger
 {
@@ -14,6 +13,7 @@ public static class Logger
 #if DEBUG
         _logFile = Misc.AppName + "_" + GameUtils.EpochMillis() + ".log";
         _writer = new StreamWriter(_logFile);
+        Log(Misc.AppName + " " + Misc.AppVersion + " started");
 #endif
     }
 
@@ -24,7 +24,7 @@ public static class Logger
         {
             throw new InvalidOperationException("Log class not initialized");
         }
-        _writer.WriteLine("{0} {1} - {2}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), logMessage);
+        _writer.WriteLine("{0:yyyy/MM/dd HH:mm:ss zz} - {1}", DateTime.Now, logMessage);
 #endif
     }
 

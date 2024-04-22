@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace roguelitri.util;
+namespace roguelitri.Util;
 
 public static class Misc
 {

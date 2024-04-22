@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using RenderingLibrary;
 using roguelitri.Model.Scenes;
 using roguelitri.Service;
+using roguelitri.Util;
 
 namespace roguelitri;
 
@@ -80,6 +81,7 @@ public class Game1 : Game
     protected override void OnExiting(object sender, EventArgs args)
     {
         base.OnExiting(sender, args);
+        Logger.Log("Shutting down...");
         Console.WriteLine("Another fine release from Enloartolameza Studios!");
         Logger.Dispose();
         Environment.Exit(Environment.ExitCode);
