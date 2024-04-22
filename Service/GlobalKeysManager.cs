@@ -51,9 +51,6 @@ public class GlobalKeysManager
 
             texture.SaveAsPng(stream, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight);
 
-            // TODO make it use system culture or be able to change
-            Console.WriteLine(GeneralLangResource.Culture = CultureInfo.CurrentCulture);
-            Console.WriteLine(Thread.CurrentThread.CurrentCulture.Name);
             Console.WriteLine(GeneralLangResource.wrote_screenshot_console_text, filename);
         }
         

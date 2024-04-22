@@ -22,10 +22,10 @@
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
     <EmbeddedResource Update="Resources\Lang\GeneralLang.es.resx">
-      <DependentUpon>GeneralLang.resx</DependentUpon>
+      <DependentUpon>GeneralLang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Lang\GeneralLang.fr.resx">
-      <DependentUpon>GeneralLang.resx</DependentUpon>
+      <DependentUpon>GeneralLang.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
