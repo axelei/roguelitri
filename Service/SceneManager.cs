@@ -9,13 +9,13 @@ namespace roguelitri.Service;
 public static class SceneManager
 {
 
-    private static Stack<Scene> _sceneStack = new Stack<Scene>();
+    private static readonly Stack<Scene> SceneStack = new Stack<Scene>();
 
     public static void SetScene(Scene scene)
     {
-        while (_sceneStack.Any())
+        while (SceneStack.Any())
         {
-            Scene pop = _sceneStack.Pop();
+            Scene pop = SceneStack.Pop();
             pop.Dispose();
         }
         
@@ -25,22 +25,22 @@ public static class SceneManager
     public static void PushScene(Scene scene)
     {
         scene.Initialize();
-        _sceneStack.Push(scene);
+        SceneStack.Push(scene);
     }
 
     public static void PopScene(Scene scene)
     {
-        Scene pop = _sceneStack.Pop();
+        Scene pop = SceneStack.Pop();
         pop.Dispose();
     }
 
     public static void Update(GameTime gameTime)
     {
-        _sceneStack.Peek().Update(gameTime);
+        SceneStack.Peek().Update(gameTime);
     }
 
     public static void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        _sceneStack.Peek().Draw(gameTime, spriteBatch);
+        SceneStack.Peek().Draw(gameTime, spriteBatch);
     }
 }
