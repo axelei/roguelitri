@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -39,7 +40,15 @@ public static class ResourceManager
         
         //// Gfx
         // Title
-        Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo"); 
-        Gfx.Title.Background = content.Load<Texture2D>("gfx/title/title_background");
+        Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo");
+        Gfx.Title.Background = loadFromFile("Content/raw/title/title_background.png");
+    }
+
+    private static Texture2D loadFromFile(string path)
+    {
+        FileStream fileStream = new FileStream(path, FileMode.Open);
+        Texture2D texture = Texture2D.FromStream(Game1.Graphics.GraphicsDevice, fileStream);
+        fileStream.Dispose();
+        return texture;
     }
 }

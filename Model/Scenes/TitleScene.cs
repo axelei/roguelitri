@@ -33,8 +33,11 @@ public class TitleScene : Scene
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap);
+
+        var logoLocation = Misc.CenterImage(new Vector2(ResourceManager.Gfx.Title.Logo.Width, ResourceManager.Gfx.Title.Logo.Height));
         
-        spriteBatch.Draw(ResourceManager.Gfx.Title.Logo, new Vector2(100, 100), Color.White);
+        spriteBatch.Draw(ResourceManager.Gfx.Title.Background, new Vector2(0, 0), Color.White);
+        spriteBatch.Draw(ResourceManager.Gfx.Title.Logo, logoLocation, Color.White);
 
         spriteBatch.End();
     }
