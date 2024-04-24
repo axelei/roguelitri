@@ -4,6 +4,7 @@ using Gum.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RenderingLibrary;
+using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
 using roguelitri.Service;
 using roguelitri.Util;
@@ -13,7 +14,9 @@ namespace roguelitri;
 public class Game1 : Game
 {
     public static GraphicsDeviceManager Graphics { get; private set; }
+    public static Settings Settings;
     public static GumProjectSave GumProject { get; private set; }
+    
     private SpriteBatch _spriteBatch;
 
     private readonly GlobalKeysManager _globalKeysManager;
@@ -30,6 +33,9 @@ public class Game1 : Game
     {
         
         Logger.Initialize();
+
+        Settings = SaveManager.LoadSettings();
+        ApplySettings(Settings);
         
         Graphics.PreferredBackBufferWidth = 1280;
         Graphics.PreferredBackBufferHeight = 720;
@@ -82,8 +88,20 @@ public class Game1 : Game
     {
         base.OnExiting(sender, args);
         Logger.Log("Shutting down...");
+
+        if (Settings.AutoSave)
+        {
+            SaveManager.SaveSettings(Settings);
+        }
+        
         Console.WriteLine("Another fine release from Enloartolameza Studios!");
+        Logger.Log("Finished shutting down.");
         Logger.Dispose();
         Environment.Exit(Environment.ExitCode);
+    }
+
+    private void ApplySettings(Settings settings)
+    {
+        
     }
 }
