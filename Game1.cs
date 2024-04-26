@@ -1,4 +1,5 @@
 ﻿using System;
+using FmodForFoxes;
 using Gum.DataTypes;
 using Gum.Managers;
 using Microsoft.Xna.Framework;
@@ -18,15 +19,17 @@ public class Game1 : Game
     public static GumProjectSave GumProject { get; private set; }
     
     private SpriteBatch _spriteBatch;
+    private INativeFmodLibrary _nativeLibrary;
 
     private readonly GlobalKeysManager _globalKeysManager;
 
-    public Game1()
+    public Game1(INativeFmodLibrary nativeLibrary)
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
         _globalKeysManager = new GlobalKeysManager(this);
+        _nativeLibrary = nativeLibrary;
     }
 
     protected override void Initialize()
@@ -50,6 +53,8 @@ public class Game1 : Game
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
         
+        FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
+        
         base.Initialize();
     }
 
@@ -69,6 +74,7 @@ public class Game1 : Game
         _globalKeysManager.Update();
 
         SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
+        FmodManager.Update();
         
         SceneManager.Update(gameTime);
 
@@ -95,6 +101,7 @@ public class Game1 : Game
         }
         
         Console.WriteLine("Another fine release from Enloartolameza Studios!");
+        FmodManager.Unload();
         Logger.Log("Finished shutting down.");
         Logger.Dispose();
         Environment.Exit(Environment.ExitCode);

@@ -1,4 +1,5 @@
 ﻿using System;
+using FmodForFoxes;
 using roguelitri.Util;
 
 namespace roguelitri;
@@ -13,7 +14,8 @@ internal static class Program
         try
 #endif
         {
-            using var game = new Game1();
+            INativeFmodLibrary _nativeLibrary = new DesktopNativeFmodLibrary();
+            using var game = new Game1(_nativeLibrary);
             game.Run();
         }
 #if DEBUG
@@ -24,6 +26,8 @@ internal static class Program
             {
                 Logger.Log(line);
             }
+
+            throw;
         }
 #endif
     }
