@@ -4,7 +4,7 @@ using roguelitri.Service;
 
 namespace roguelitri.Model.Things;
 
-public abstract class Thing
+public class Thing
 {
     public Texture2D Texture = ResourceManager.Gfx.Textures.Default;
     public Vector2 Position;

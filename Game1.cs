@@ -4,6 +4,7 @@ using Gum.DataTypes;
 using Gum.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
@@ -22,6 +23,10 @@ public class Game1 : Game
     private INativeFmodLibrary _nativeLibrary;
 
     private readonly GlobalKeysManager _globalKeysManager;
+    
+    private readonly SmoothFramerate _smoothFps = new (1000);
+    private TextRuntime _fpsText;
+
 
     public Game1(INativeFmodLibrary nativeLibrary)
     {
@@ -55,6 +60,8 @@ public class Game1 : Game
         
         FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
         
+        _fpsText = Misc.addText("FPS: -", new Vector2(0, 0));
+        
         base.Initialize();
     }
 
@@ -86,6 +93,9 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.Black);
         SceneManager.Draw(gameTime, _spriteBatch);
         SystemManagers.Default.Draw();
+        
+        _smoothFps.Update(gameTime.ElapsedGameTime.Milliseconds);
+        _fpsText.Text = "FPS: " + _smoothFps.framerate * 1000;
 
         base.Draw(gameTime);
     }

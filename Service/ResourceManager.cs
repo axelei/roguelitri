@@ -15,8 +15,8 @@ public static class ResourceManager
     
     public static class Fonts
     {
-        public static string IbmVgaFont;
-        public static string Arcade;
+        public const string IbmVgaFont = "fonts/arcadepix.fnt";
+        public const string Arcade = "fonts/ibmVga.fnt";
     }
 
     public static class Music
@@ -46,10 +46,6 @@ public static class ResourceManager
         
         Pixel = new Texture2D(Game1.Graphics.GraphicsDevice, 1, 1);
         Pixel.SetData(new [] {Color.White});
-        
-        //// Fonts
-        Fonts.Arcade = "fonts/arcadepix.fnt";
-        Fonts.IbmVgaFont = "fonts/ibmVga.fnt";
         
         //// Music
         Music.IntoTheNight = CoreSystem.LoadStreamedSound("raw/music/The_Spin_Wires_-_Into_The_Night.mp3");
