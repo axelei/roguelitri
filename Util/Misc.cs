@@ -11,6 +11,10 @@ public static class Misc
     public static readonly Version AppVersion = typeof(Program).Assembly.GetName().Version;
     public static readonly string AppName = typeof(Program).Assembly.GetName().Name;
     
+    public const int TileSize = 32;
+    public const int NativeWidth = 1280;
+    public const int NativeHeight = 720;
+    
     public static Vector2 CenterImage(Vector2 imageSize, Vector2 containerSize)
     {
         return new Vector2((containerSize.X - imageSize.X) / 2, (containerSize.Y - imageSize.Y) / 2);

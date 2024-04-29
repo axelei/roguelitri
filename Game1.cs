@@ -20,7 +20,9 @@ public class Game1 : Game
     public static GumProjectSave GumProject { get; private set; }
     
     private SpriteBatch _spriteBatch;
-    private INativeFmodLibrary _nativeLibrary;
+    private readonly INativeFmodLibrary _nativeLibrary;
+    private RenderTarget2D _renderTarget; // As shown in https://www.youtube.com/watch?v=Zla4q0Z6Zwc
+    private Rectangle _renderDestination;
 
     private readonly GlobalKeysManager _globalKeysManager;
     
@@ -44,10 +46,19 @@ public class Game1 : Game
         Settings = SaveManager.LoadSettings();
         ApplySettings(Settings);
         
-        Graphics.PreferredBackBufferWidth = 1280;
-        Graphics.PreferredBackBufferHeight = 720;
+        Graphics.PreferredBackBufferWidth = Misc.NativeWidth;
+        Graphics.PreferredBackBufferHeight = Misc.NativeHeight;
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
         Graphics.ApplyChanges();
+        
+        Window.AllowUserResizing = true;
+        Window.AllowAltF4 = true;
+        Window.Title = Misc.AppName + " v" + Misc.AppVersion;
+        Window.ClientSizeChanged += OnClientWindowSizeChanged;
+        CalculateRenderDestination();
+        Graphics.GraphicsDevice.Viewport = new Viewport(_renderDestination);
+        
+        _renderTarget = new RenderTarget2D(GraphicsDevice, Misc.NativeWidth, Misc.NativeHeight);
         
         SystemManagers.Default = new SystemManagers(); 
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
@@ -89,11 +100,21 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
+        GraphicsDevice.SetRenderTarget(_renderTarget);
+
         SceneManager.Draw(gameTime, _spriteBatch);
         SystemManagers.Default.Draw();
         
+#if DEBUG
         _fpsText.Text = "FPS: " + (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString("0.00");
+#endif
+        
+        GraphicsDevice.SetRenderTarget(null);
 
+        _spriteBatch.Begin(samplerState : SamplerState.PointClamp);
+        _spriteBatch.Draw(_renderTarget, _renderDestination, Color.White);
+        _spriteBatch.End();
+        
         base.Draw(gameTime);
     }
     
@@ -116,6 +137,46 @@ public class Game1 : Game
 
     private void ApplySettings(Settings settings)
     {
+        
+    }
+    
+    private void OnClientWindowSizeChanged(object sender, EventArgs e)
+    {
+        CalculateRenderDestination();
+    }
+    
+    private void CalculateRenderDestination()
+    {
+        float targetAspectRatio = (float) Misc.NativeWidth / Misc.NativeHeight;
+        int width = GraphicsDevice.PresentationParameters.BackBufferWidth;
+        int height = GraphicsDevice.PresentationParameters.BackBufferHeight;
+        float currentAspectRatio = (float) width / height;
+        if (currentAspectRatio > targetAspectRatio)
+        {
+            width = (int)(height * targetAspectRatio + 0.5f);
+        }
+        else
+        {
+            height = (int)(width / targetAspectRatio + 0.5f);
+        }
+        _renderDestination = new Rectangle(
+            GraphicsDevice.PresentationParameters.BackBufferWidth / 2 - width / 2,
+            GraphicsDevice.PresentationParameters.BackBufferHeight / 2 - height / 2,
+            width,
+            height);
+        
+        /*
+        Point size = GraphicsDevice.Viewport.Bounds.Size;
+
+        float scaleX = (float) size.X / _renderTarget.Width;
+        float scaleY = (float)size.Y / _renderTarget.Height;
+        float scale = Math.Min(scaleX, scaleY);
+
+        _renderDestination.Width = (int)(_renderTarget.Width * scale);
+        _renderDestination.Height = (int)(_renderTarget.Height * scale);
+
+        _renderDestination.X = (size.X - _renderDestination.Width) / 2;
+        _renderDestination.Y = (size.Y - _renderDestination.Height) / 2;*/
         
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace roguelitri.Model.Things.Decals.Mobs;
+﻿namespace roguelitri.Model.Things.Decals.Mobs;
 
 public class Mob : Decal
 {

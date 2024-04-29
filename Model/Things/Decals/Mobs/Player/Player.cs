@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using roguelitri.Service;
+﻿using roguelitri.Service;
 
 namespace roguelitri.Model.Things.Decals.Mobs.Player;
 

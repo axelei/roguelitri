@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum.GueDeriving;
+using roguelitri.Model.Save;
 using roguelitri.Model.Things;
 using roguelitri.Model.Things.Decals.Mobs.Player;
 using roguelitri.Service;
@@ -31,16 +32,15 @@ public class GameScene : Scene
         _player = new Player(0);
 
         _playing = ResourceManager.Music.IntoTheNight.Play();
+        _playing.Volume = Game1.Settings.MusicVolume;
         _playing.Looping = true;
         
         _camera = new Camera(Game1.Graphics.GraphicsDevice.Viewport);
 
         _things.Add(_player);
 
-#if DEBUG
         _posText = Misc.addText("POS X/Y: ", new Vector2(0, 25));
         _uiElements.Add(_posText);
-#endif
 
     }
 
@@ -51,14 +51,14 @@ public class GameScene : Scene
         _camera.UpdateCamera(Game1.Graphics.GraphicsDevice.Viewport);
         _camera.Position = _player.Position;
         
+#if DEBUG
         _posText.Text = $"POS X/Y: {_player.Position.X}/{_player.Position.Y}";
+#endif
 
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        
-        
         spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, _camera.Transform);
 
         DrawFloor(spriteBatch);

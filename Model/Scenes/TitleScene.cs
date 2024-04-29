@@ -43,6 +43,5 @@ public class TitleScene : Scene
     public override void Dispose()
     {
         _screen.RemoveFromManagers();
-        MusicManager.Stop();
     }
 }

@@ -20,7 +20,7 @@ public static class SaveManager
     public static Settings LoadSettings()
     {
         Logger.Log("Loading settings");
-        if (!File.Exists(SaveFolder +"/" + SettingsFileName))
+        if (!File.Exists(SaveFolder + "/" + SettingsFileName))
         {
             Logger.Log("Settings file " + QualifiedSaveFile + " not found, using defaults");
             return new Settings();
