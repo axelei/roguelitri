@@ -18,8 +18,6 @@ public class TitleScene : Scene
     public override void Initialize()
     {
         _screen = Game1.GumProject.Screens.First().ToGraphicalUiElement(SystemManagers.Default, addToManagers:true);
-        
-        MusicManager.Play(ResourceManager.Music.TestSong);
     }
 
     public override void Update(GameTime gameTime)

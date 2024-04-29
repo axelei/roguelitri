@@ -24,7 +24,7 @@ public static class Logger
         {
             throw new InvalidOperationException("Log class not initialized");
         }
-        _writer.WriteLine("{0:yyyy/MM/dd HH:mm:ss zz} - {1}", DateTime.Now, logMessage);
+        _writer.WriteLine("{0:O} - {1}", DateTime.Now, logMessage);
 #endif
     }
 

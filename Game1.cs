@@ -1,8 +1,10 @@
 ﻿using System;
+using FmodForFoxes;
 using Gum.DataTypes;
 using Gum.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
@@ -18,15 +20,20 @@ public class Game1 : Game
     public static GumProjectSave GumProject { get; private set; }
     
     private SpriteBatch _spriteBatch;
+    private INativeFmodLibrary _nativeLibrary;
 
     private readonly GlobalKeysManager _globalKeysManager;
+    
+    private TextRuntime _fpsText;
 
-    public Game1()
+
+    public Game1(INativeFmodLibrary nativeLibrary)
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
         _globalKeysManager = new GlobalKeysManager(this);
+        _nativeLibrary = nativeLibrary;
     }
 
     protected override void Initialize()
@@ -46,9 +53,12 @@ public class Game1 : Game
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
         
         GumProject = GumProjectSave.Load("ui/roguelitri.gumx", out GumLoadResult result);
-        result.ErrorMessage.Length.ToString();
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
+        
+        FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
+        
+        _fpsText = Misc.addText("FPS: -", new Vector2(0, 0));
         
         base.Initialize();
     }
@@ -69,6 +79,7 @@ public class Game1 : Game
         _globalKeysManager.Update();
 
         SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
+        FmodManager.Update();
         
         SceneManager.Update(gameTime);
 
@@ -80,6 +91,8 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.Black);
         SceneManager.Draw(gameTime, _spriteBatch);
         SystemManagers.Default.Draw();
+        
+        _fpsText.Text = "FPS: " + (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString("0.00");
 
         base.Draw(gameTime);
     }
@@ -95,6 +108,7 @@ public class Game1 : Game
         }
         
         Console.WriteLine("Another fine release from Enloartolameza Studios!");
+        FmodManager.Unload();
         Logger.Log("Finished shutting down.");
         Logger.Dispose();
         Environment.Exit(Environment.ExitCode);
