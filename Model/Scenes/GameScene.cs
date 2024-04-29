@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FmodForFoxes;
 using Gum.Wireframe;
@@ -20,6 +21,8 @@ public class GameScene : Scene
     private Camera _camera;
     private Player _player;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
+
+    private TextRuntime _posText;
     
     private readonly List<Thing> _things = new ();
     
@@ -32,7 +35,12 @@ public class GameScene : Scene
         
         _camera = new Camera(Game1.Graphics.GraphicsDevice.Viewport);
 
-        AddGrid();
+        _things.Add(_player);
+
+#if DEBUG
+        _posText = Misc.addText("POS X/Y: ", new Vector2(0, 25));
+        _uiElements.Add(_posText);
+#endif
 
     }
 
@@ -42,8 +50,8 @@ public class GameScene : Scene
 
         _camera.UpdateCamera(Game1.Graphics.GraphicsDevice.Viewport);
         _camera.Position = _player.Position;
-
-        _things.Add(_player);
+        
+        _posText.Text = $"POS X/Y: {_player.Position.X}/{_player.Position.Y}";
 
     }
 
@@ -51,17 +59,16 @@ public class GameScene : Scene
     {
         
         
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, null, null, null, _camera.Transform);
+        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, _camera.Transform);
 
         DrawFloor(spriteBatch);
-        
+
         DrawThings(spriteBatch);
         
         spriteBatch.End();
         
 #if DEBUG
         spriteBatch.Begin();
-        
         spriteBatch.End();
 #endif
     }
@@ -77,12 +84,15 @@ public class GameScene : Scene
     private void DrawFloor(SpriteBatch spriteBatch)
     {
         // 1024x1024
-        float camX = _camera.Position.X;
-        float camY = _camera.Position.X;
+        int camX = (int) _camera.Position.X;
+        int camY = (int) _camera.Position.Y;
 
-        for (float y = -camY % 1024 - 1024; y < 1024 + camY % 1024; y += 1024)
+        int nearestX = Misc.nearestMultiple(camX, 1024);
+        int nearestY = Misc.nearestMultiple(camY, 1024);
+        
+        for (int x = nearestX - 2048; x < 2048 + nearestX; x += 1024)
         {
-            for (float x = -camX % 1024 - 1024; x < 1024 + camX % 1024; x += 1024)
+            for (int y = nearestY - 2048; y < 2048 + nearestY; y += 1024)
             {
                 spriteBatch.Draw(ResourceManager.Gfx.Textures.Dirt, new Vector2(x, y), Color.White);
             }
@@ -122,23 +132,4 @@ public class GameScene : Scene
         }
     }
     
-    #if DEBUG
-
-    private void AddGrid()
-    {
-        int bigTiles = 8;
-        for (int x = -1024 * bigTiles; x < 1024 * bigTiles; x += 32)
-        {
-            for (int y = -1024 * bigTiles; y < 1024 * bigTiles; y+= 32)
-            {
-                _things.Add(new Thing
-                {
-                    Position = new Vector2(x, y),
-                    Texture = ResourceManager.Pixel
-                });
-            }
-        }
-    }
-    
-    #endif
 }

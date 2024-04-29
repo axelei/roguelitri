@@ -7,11 +7,11 @@ namespace roguelitri.Model.Things.Decals.Mobs.Player;
 public class Player : Mob
 {
     public int PlayerIndex;
-    public float Speed = 0.5f;
-    public new Texture2D Texture = ResourceManager.Gfx.Player;
     
     public Player(int playerIndex)
     {
+        Speed = 0.3f;
+        Texture = ResourceManager.Gfx.Player;
         PlayerIndex = playerIndex;
     }
 }

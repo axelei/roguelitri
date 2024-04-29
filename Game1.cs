@@ -24,7 +24,6 @@ public class Game1 : Game
 
     private readonly GlobalKeysManager _globalKeysManager;
     
-    private readonly SmoothFramerate _smoothFps = new (1000);
     private TextRuntime _fpsText;
 
 
@@ -54,7 +53,6 @@ public class Game1 : Game
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
         
         GumProject = GumProjectSave.Load("ui/roguelitri.gumx", out GumLoadResult result);
-        result.ErrorMessage.Length.ToString();
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
         
@@ -94,8 +92,7 @@ public class Game1 : Game
         SceneManager.Draw(gameTime, _spriteBatch);
         SystemManagers.Default.Draw();
         
-        _smoothFps.Update(gameTime.ElapsedGameTime.Milliseconds);
-        _fpsText.Text = "FPS: " + _smoothFps.framerate * 1000;
+        _fpsText.Text = "FPS: " + (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString("0.00");
 
         base.Draw(gameTime);
     }

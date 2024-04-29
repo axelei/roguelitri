@@ -35,4 +35,8 @@ public static class Misc
         return textRuntime;
     }
     
+    public static int nearestMultiple(int number, int multiple)
+    {
+        return (int) Math.Round((double) number / multiple) * multiple;
+    }
 }
