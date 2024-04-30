@@ -6,7 +6,7 @@ public class Enemy : Mob
 {
     public Vector2 targetPosition;
     
-    public virtual void Update()
+    public override void Update()
     {
         base.Update();
     }

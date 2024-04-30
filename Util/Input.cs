@@ -10,10 +10,16 @@ public static class Input
 
     private static Keys[] _previousKeyPressedQuery;
     private static Tuple<PlayerIndex, Buttons[]> _previousButtonPressedQuery;
-    public static bool KeyPressed(params Microsoft.Xna.Framework.Input.Keys[] keys)
+    public static bool AllKeyPressed(params Microsoft.Xna.Framework.Input.Keys[] keys)
     {
         return keys.All(key => Keyboard.GetState().IsKeyDown(key));
     }
+    
+    public static bool AnyKeyPressed(params Microsoft.Xna.Framework.Input.Keys[] keys)
+    {
+        return keys.Any(key => Keyboard.GetState().IsKeyDown(key));
+    }
+
 
     public static bool HasBeenPressed(params Keys[] keys)
     {

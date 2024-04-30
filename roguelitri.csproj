@@ -5,7 +5,10 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-    <LangVersion>11</LangVersion>
+    <LangVersion>10</LangVersion>
+    <Company>Enloartolameza Studios</Company>
+    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <FileVersion>0.0.0.1</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -43,12 +46,15 @@
   <ItemGroup>
     <PackageReference Include="FmodForFoxes" Version="3.1.0" />
     <PackageReference Include="FmodForFoxes.Desktop" Version="3.1.0" />
-    <PackageReference Include="Gum.MonoGame" Version="2024.3.8.1" />
+    <PackageReference Include="Gum.MonoGame" Version="2024.4.29.2" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\raw\*\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\raw\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\fonts\*.*">
@@ -57,7 +63,7 @@
     <None Update="Content\ui\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\ui\screens\*.*">
+    <None Update="Content\ui\*\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

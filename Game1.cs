@@ -63,7 +63,7 @@ public class Game1 : Game
         SystemManagers.Default = new SystemManagers(); 
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
         
-        GumProject = GumProjectSave.Load("ui/roguelitri.gumx", out GumLoadResult result);
+        GumProject = GumProjectSave.Load("ui/roguelitri.gumx");
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
         
@@ -147,36 +147,24 @@ public class Game1 : Game
     
     private void CalculateRenderDestination()
     {
-        float targetAspectRatio = (float) Misc.NativeWidth / Misc.NativeHeight;
+        const float targetAspectRatio = (float) Misc.NativeWidth / Misc.NativeHeight;
         int width = GraphicsDevice.PresentationParameters.BackBufferWidth;
         int height = GraphicsDevice.PresentationParameters.BackBufferHeight;
         float currentAspectRatio = (float) width / height;
+        
         if (currentAspectRatio > targetAspectRatio)
         {
-            width = (int)(height * targetAspectRatio + 0.5f);
+            width = (int) (height * targetAspectRatio + 0.5f);
         }
         else
         {
-            height = (int)(width / targetAspectRatio + 0.5f);
+            height = (int) (width / targetAspectRatio + 0.5f);
         }
+
         _renderDestination = new Rectangle(
             GraphicsDevice.PresentationParameters.BackBufferWidth / 2 - width / 2,
             GraphicsDevice.PresentationParameters.BackBufferHeight / 2 - height / 2,
             width,
             height);
-        
-        /*
-        Point size = GraphicsDevice.Viewport.Bounds.Size;
-
-        float scaleX = (float) size.X / _renderTarget.Width;
-        float scaleY = (float)size.Y / _renderTarget.Height;
-        float scale = Math.Min(scaleX, scaleY);
-
-        _renderDestination.Width = (int)(_renderTarget.Width * scale);
-        _renderDestination.Height = (int)(_renderTarget.Height * scale);
-
-        _renderDestination.X = (size.X - _renderDestination.Width) / 2;
-        _renderDestination.Y = (size.Y - _renderDestination.Height) / 2;*/
-        
     }
 }

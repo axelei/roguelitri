@@ -21,13 +21,13 @@ public class GlobalKeysManager
     public void Update()
     {
         // Exit
-        if (Input.ButtonPressed(PlayerIndex.One, Buttons.Back) || Input.KeyPressed(Keys.Escape) || Input.KeyPressed(Keys.LeftAlt, Keys.F4))
+        if (Input.ButtonPressed(PlayerIndex.One, Buttons.Back) || Input.AllKeyPressed(Keys.Escape) || Input.AllKeyPressed(Keys.LeftAlt, Keys.F4))
         {
             _gameInstance.Exit();
         }
 
         // Full screen
-        if ((Input.KeyPressed(Keys.LeftAlt) || Input.KeyPressed(Keys.RightAlt)) && Input.KeyPressed(Keys.Enter))
+        if ((Input.AllKeyPressed(Keys.LeftAlt) || Input.AllKeyPressed(Keys.RightAlt)) && Input.AllKeyPressed(Keys.Enter))
         {
             Game1.Graphics.ToggleFullScreen();
         }
