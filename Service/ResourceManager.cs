@@ -52,14 +52,14 @@ public static class ResourceManager
         Gfx.Player = content.Load<Texture2D>("gfx/player");
         // Title
         Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo");
-        Gfx.Title.Background = loadFromFile("Content/raw/title/title_background.png");
+        Gfx.Title.Background = LoadFromFile("Content/raw/title/title_background.png");
         
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");
         Gfx.Textures.Dirt = content.Load<Texture2D>("gfx/textures/dirt");
     }
 
-    private static Texture2D loadFromFile(string path)
+    private static Texture2D LoadFromFile(string path)
     {
         FileStream fileStream = new FileStream(path, FileMode.Open);
         Texture2D texture = Texture2D.FromStream(Game1.Graphics.GraphicsDevice, fileStream);

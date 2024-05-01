@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum.GueDeriving;
 using roguelitri.Model.Things;
+using roguelitri.Model.Things.Decals.Mobs;
+using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Model.Things.Decals.Mobs.Player;
 using roguelitri.Service;
 using roguelitri.Util;
@@ -15,10 +17,10 @@ namespace roguelitri.Model.Scenes;
 
 public class GameScene : Scene
 {
-
+    public Player Player { get; private set; }
+    
     private Channel _playing;
     private Camera2D _camera;
-    private Player _player;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _posText;
@@ -27,18 +29,18 @@ public class GameScene : Scene
     
     public override void Initialize()
     {
-        _player = new Player(0);
+        Player = new Player(0);
 
         _playing = ResourceManager.Music.IntoTheNight.Play();
         _playing.Volume = Game1.Settings.MusicVolume;
         _playing.Looping = true;
         
         _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
-        _camera.Origin = new Vector2(Misc.NativeWidth / 2, Misc.NativeHeight / 2);
+        _camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
-        _things.Add(_player);
+        _things.Add(Player);
 
-        _posText = Misc.addText("POS X/Y: ", new Vector2(0, 25));
+        _posText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
         _uiElements.Add(_posText);
         
 #if DEBUG
@@ -50,10 +52,15 @@ public class GameScene : Scene
     {
         UpdateControls(gameTime);
 
-        _camera.Position = _player.Position;
+        _camera.Position = Player.Position;
+        
+        foreach (Mob mob in _things.FindAll(mob => mob is Mob))
+        {
+            mob.Update(gameTime);
+        }
         
 #if DEBUG
-        _posText.Text = $"POS X/Y: {_player.Position.X}/{_player.Position.Y}";
+        _posText.Text = $"POS X/Y: {Player.Position.X}/{Player.Position.Y}";
 #endif
 
     }
@@ -88,8 +95,8 @@ public class GameScene : Scene
         int camX = (int) _camera.Position.X;
         int camY = (int) _camera.Position.Y;
 
-        int nearestX = Misc.nearestMultiple(camX, textureX);
-        int nearestY = Misc.nearestMultiple(camY, textureY);
+        int nearestX = Misc.NearestMultiple(camX, textureX);
+        int nearestY = Misc.NearestMultiple(camY, textureY);
         
         for (int x = nearestX - resX2; x < resX2 + nearestX; x += textureX)
         {
@@ -121,7 +128,13 @@ public class GameScene : Scene
         if (moveVector != Vector2.Zero)
         {
             moveVector.Normalize();
-            _player.Position += moveVector * _player.Speed * gameTime.ElapsedGameTime.Milliseconds ;
+            Player.Position += moveVector * Player.Speed * gameTime.ElapsedGameTime.Milliseconds;
+        }
+
+        if (Input.AnyKeyPressed(Keys.E))
+        {
+            Enemy enemy = new Enemy(this);
+            _things.Add(enemy);
         }
         
     }

@@ -14,8 +14,8 @@ internal static class Program
         try
 #endif
         {
-            INativeFmodLibrary _nativeLibrary = new DesktopNativeFmodLibrary();
-            using var game = new Game1(_nativeLibrary);
+            INativeFmodLibrary nativeLibrary = new DesktopNativeFmodLibrary();
+            using var game = new Game1(nativeLibrary);
             game.Run();
         }
 #if DEBUG

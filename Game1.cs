@@ -69,7 +69,7 @@ public class Game1 : Game
         
         FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
         
-        _fpsText = Misc.addText("FPS: -", new Vector2(0, 0));
+        _fpsText = Misc.AddText("FPS: -", new Vector2(0, 0));
         
         base.Initialize();
     }

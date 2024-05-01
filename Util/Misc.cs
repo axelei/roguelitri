@@ -25,7 +25,7 @@ public static class Misc
         return CenterImage(imageSize, new Vector2(Game1.Graphics.PreferredBackBufferWidth, Game1.Graphics.PreferredBackBufferHeight));
     }
 
-    public static TextRuntime addText(String text, Vector2 position, String font = ResourceManager.Fonts.IbmVgaFont)
+    public static TextRuntime AddText(String text, Vector2 position, String font = ResourceManager.Fonts.IbmVgaFont)
     {
         var textRuntime = new TextRuntime
         {
@@ -39,7 +39,7 @@ public static class Misc
         return textRuntime;
     }
     
-    public static int nearestMultiple(int number, int multiple)
+    public static int NearestMultiple(int number, int multiple)
     {
         return (int) Math.Round((double) number / multiple) * multiple;
     }
