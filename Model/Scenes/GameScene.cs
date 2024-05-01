@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FmodForFoxes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
@@ -18,6 +19,7 @@ namespace roguelitri.Model.Scenes;
 public class GameScene : Scene
 {
     public Player Player { get; private set; }
+    public Level CurrLevel;
     
     private Channel _playing;
     private Camera2D _camera;
@@ -30,8 +32,11 @@ public class GameScene : Scene
     public override void Initialize()
     {
         Player = new Player(0);
+        CurrLevel = LevelManager.LoadLevel("Content/lvl/test.json");
+        CurrLevel.Random = new Random(CurrLevel.Seed);
+        
 
-        _playing = ResourceManager.Music.IntoTheNight.Play();
+        _playing = ResourcesManager.Music.IntoTheNight.Play();
         _playing.Volume = Game1.Settings.MusicVolume;
         _playing.Looping = true;
         
@@ -57,20 +62,10 @@ public class GameScene : Scene
         foreach (Mob mob in _things.FindAll(mob => mob is Mob))
         {
             mob.Update(gameTime);
-            foreach (Mob otherMob in _things.FindAll(otherMob => otherMob is Mob && otherMob != mob))
+            if (mob.Solid)
             {
-                Rectangle hitbox1 = new Rectangle(otherMob.CollisionBox.X + (int) otherMob.Position.X,
-                    otherMob.CollisionBox.Y + (int) otherMob.Position.Y,
-                    otherMob.CollisionBox.Width, otherMob.CollisionBox.Height);
-                Rectangle hitbox2 = new Rectangle(mob.CollisionBox.X + (int) mob.Position.X,
-                    mob.CollisionBox.Y + (int) mob.Position.Y,
-                    mob.CollisionBox.Width, mob.CollisionBox.Height);
-                if (hitbox1.Intersects(hitbox2))
-                {
-                    otherMob.Collide(mob, gameTime);
-                }
+                CalculateCollisions(mob, gameTime);
             }
-            
         }
         
 #if DEBUG
@@ -103,20 +98,17 @@ public class GameScene : Scene
     {
         int resX2 = Game1.Graphics.GraphicsDevice.Viewport.Width * 2;
         int resY2 = Game1.Graphics.GraphicsDevice.Viewport.Height * 2;
-        int textureX = ResourceManager.Gfx.Textures.Dirt.Width;
-        int textureY = ResourceManager.Gfx.Textures.Dirt.Height;
+        int textureX = ResourcesManager.Gfx.Textures.Dirt.Width;
+        int textureY = ResourcesManager.Gfx.Textures.Dirt.Height;
         
-        int camX = (int) _camera.Position.X;
-        int camY = (int) _camera.Position.Y;
-
-        int nearestX = Misc.NearestMultiple(camX, textureX);
-        int nearestY = Misc.NearestMultiple(camY, textureY);
+        int nearestX = Misc.NearestMultiple((int) _camera.Position.X, textureX);
+        int nearestY = Misc.NearestMultiple((int) _camera.Position.Y, textureY);
         
         for (int x = nearestX - resX2; x < resX2 + nearestX; x += textureX)
         {
             for (int y = nearestY - resY2; y < resY2 + nearestY; y += textureY)
             {
-                spriteBatch.Draw(ResourceManager.Gfx.Textures.Dirt, new Vector2(x, y), Color.White);
+                spriteBatch.Draw(ResourcesManager.Gfx.Textures.Dirt, new Vector2(x, y), Color.White);
             }
         }
     }
@@ -151,6 +143,27 @@ public class GameScene : Scene
             _things.Add(enemy);
         }
         
+    }
+
+    private void CalculateCollisions(Mob mob, GameTime gameTime)
+    {
+        foreach (Mob otherMob in _things.FindAll(otherMob => otherMob is Mob && otherMob != mob))
+        {
+            if (!mob.Solid)
+            {
+                continue;
+            }
+            Rectangle hitbox1 = new Rectangle(otherMob.CollisionBox.X + (int) otherMob.Position.X,
+                otherMob.CollisionBox.Y + (int) otherMob.Position.Y,
+                otherMob.CollisionBox.Width, otherMob.CollisionBox.Height);
+            Rectangle hitbox2 = new Rectangle(mob.CollisionBox.X + (int) mob.Position.X,
+                mob.CollisionBox.Y + (int) mob.Position.Y,
+                mob.CollisionBox.Width, mob.CollisionBox.Height);
+            if (hitbox1.Intersects(hitbox2))
+            {
+                otherMob.Collide(mob, gameTime);
+            }
+        }
     }
     
 }

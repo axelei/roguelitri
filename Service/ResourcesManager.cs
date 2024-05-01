@@ -1,12 +1,13 @@
 ﻿using System.IO;
 using FmodForFoxes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace roguelitri.Service;
 
-public static class ResourceManager
+public static class ResourcesManager
 {
 
     public static Texture2D Pixel;
@@ -38,6 +39,11 @@ public static class ResourceManager
             public static Texture2D Dirt;
         }
     }
+    
+    public static class Sfx
+    {
+        public static SoundEffect PlayerHit;
+    }
 
     public static void LoadContent(ContentManager content)
     {
@@ -57,6 +63,10 @@ public static class ResourceManager
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");
         Gfx.Textures.Dirt = content.Load<Texture2D>("gfx/textures/dirt");
+        
+        //// Sfx
+        // Player
+        Sfx.PlayerHit = content.Load<SoundEffect>("sfx/player/player_hit");
     }
 
     private static Texture2D LoadFromFile(string path)

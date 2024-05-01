@@ -26,7 +26,7 @@ public class Game1 : Game
 
     private readonly GlobalKeysManager _globalKeysManager;
     
-    private TextRuntime _fpsText;
+    private TextRuntime _debugText;
 
 
     public Game1(INativeFmodLibrary nativeLibrary)
@@ -69,14 +69,14 @@ public class Game1 : Game
         
         FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
         
-        _fpsText = Misc.AddText("FPS: -", new Vector2(0, 0));
+        _debugText = Misc.AddText("FPS: -", new Vector2(0, 0));
         
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        ResourceManager.LoadContent(Content);
+        ResourcesManager.LoadContent(Content);
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
@@ -106,7 +106,7 @@ public class Game1 : Game
         SystemManagers.Default.Draw();
         
 #if DEBUG
-        _fpsText.Text = "FPS: " + (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString("0.00");
+        _debugText.Text = "FPS: " + (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString("0.00");
 #endif
         
         GraphicsDevice.SetRenderTarget(null);

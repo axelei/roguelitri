@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace roguelitri.Model;
 
 /// <summary>
-/// From: https://manbeardgames.github.io/docs/tutorials/2D-camera
+/// From: https://manbeardgames.github.io/docs/tutorials/2D-camera (modified)
 /// </summary>
 public class Camera2D
 {
@@ -19,7 +19,7 @@ public class Camera2D
     private Vector2 _position = Vector2.Zero;
 
     //  The rotation of the camera along the Z axis
-    private float _rotation = 0;
+    private float _rotation;
 
     //  The x and y zoom level of the camera
     private Vector2 _zoom = Vector2.One;
@@ -32,6 +32,8 @@ public class Camera2D
 
     //  The Viewport reference for the camera
     public Viewport Viewport;
+    
+    private const float Tolerance = 0.0001f;
 
     /// <summary>
     ///     Creates a new 2D camera instance
@@ -49,9 +51,11 @@ public class Camera2D
     /// <param name="height">The height of the viewport</param>
     public Camera2D(int width, int height)
     {
-        Viewport = new Viewport();
-        Viewport.Width = width;
-        Viewport.Height = height;
+        Viewport = new Viewport
+        {
+            Width = width,
+            Height = height
+        };
     }
 
     /// <summary>
@@ -139,7 +143,7 @@ public class Camera2D
     /// </summary>
     public Vector2 Position
     {
-        get { return _position; }
+        get => _position;
         set
         {
             //  If the value hasn't actually changed, just return back
@@ -158,11 +162,11 @@ public class Camera2D
     /// </summary>
     public float Rotation
     {
-        get { return _rotation; }
+        get => _rotation;
         set
         {
             //  If the value hasn't actually changed, just return back
-            if (_rotation == value) { return; }
+            if (Math.Abs(_rotation - value) < Tolerance) { return; }
 
             //  Set the rotation value
             _rotation = value;
@@ -177,7 +181,7 @@ public class Camera2D
     /// </summary>
     public Vector2 Zoom
     {
-        get { return _zoom; }
+        get => _zoom;
         set
         {
             //  If the value hasn't actually changed, just return back
@@ -197,7 +201,7 @@ public class Camera2D
     /// </summary>
     public Vector2 Origin
     {
-        get { return _origin; }
+        get => _origin;
         set
         {
             //  If the value hasn't actually changed, just return back
@@ -217,11 +221,11 @@ public class Camera2D
     /// </summary>
     public float X
     {
-        get { return _position.X; }
+        get => _position.X;
         set
         {
             //  If the value hasn't actually changed, just return back
-            if (_position.X == value) { return; }
+            if (Math.Abs(_position.X - value) < Tolerance) { return; }
 
             //  Set the position x value
             _position.X = value;
@@ -237,11 +241,11 @@ public class Camera2D
     /// </summary>
     public float Y
     {
-        get { return _position.Y; }
+        get => _position.Y;
         set
         {
             //  If the value hasn't actually changed, just return back
-            if (_position.Y == value) { return; }
+            if (Math.Abs(_position.Y - value) < Tolerance) { return; }
 
             //  Set the position y value
             _position.Y = value;

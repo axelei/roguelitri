@@ -32,10 +32,10 @@ public class TitleScene : Scene
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap);
 
-        var logoLocation = Misc.CenterImage(new Vector2(ResourceManager.Gfx.Title.Logo.Width, ResourceManager.Gfx.Title.Logo.Height));
+        var logoLocation = Misc.CenterImage(new Vector2(ResourcesManager.Gfx.Title.Logo.Width, ResourcesManager.Gfx.Title.Logo.Height));
         
-        spriteBatch.Draw(ResourceManager.Gfx.Title.Background, new Vector2(0, 0), Color.White);
-        spriteBatch.Draw(ResourceManager.Gfx.Title.Logo, logoLocation, Color.White);
+        spriteBatch.Draw(ResourcesManager.Gfx.Title.Background, new Vector2(0, 0), Color.White);
+        spriteBatch.Draw(ResourcesManager.Gfx.Title.Logo, logoLocation, Color.White);
 
         spriteBatch.End();
     }

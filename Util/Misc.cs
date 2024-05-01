@@ -25,7 +25,7 @@ public static class Misc
         return CenterImage(imageSize, new Vector2(Game1.Graphics.PreferredBackBufferWidth, Game1.Graphics.PreferredBackBufferHeight));
     }
 
-    public static TextRuntime AddText(String text, Vector2 position, String font = ResourceManager.Fonts.IbmVgaFont)
+    public static TextRuntime AddText(String text, Vector2 position, String font = ResourcesManager.Fonts.IbmVgaFont)
     {
         var textRuntime = new TextRuntime
         {

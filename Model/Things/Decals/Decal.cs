@@ -14,4 +14,8 @@ public class Decal : Thing
     {
         CollisionBox = new Rectangle(0, 0, Texture.Height, Texture.Width);
     }
+    
+    public virtual void Update(GameTime gameTime)
+    {
+    }
 }
