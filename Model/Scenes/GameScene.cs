@@ -34,6 +34,7 @@ public class GameScene : Scene
         _playing.Looping = true;
         
         _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
+        _camera.Origin = new Vector2(Misc.NativeWidth / 2, Misc.NativeHeight / 2);
 
         _things.Add(_player);
 
@@ -49,7 +50,7 @@ public class GameScene : Scene
     {
         UpdateControls(gameTime);
 
-        _camera.Position = _player.Position - new Vector2(Misc.NativeWidth / 2, Misc.NativeHeight / 2);
+        _camera.Position = _player.Position;
         
 #if DEBUG
         _posText.Text = $"POS X/Y: {_player.Position.X}/{_player.Position.Y}";
