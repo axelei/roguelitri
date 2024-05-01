@@ -57,6 +57,20 @@ public class GameScene : Scene
         foreach (Mob mob in _things.FindAll(mob => mob is Mob))
         {
             mob.Update(gameTime);
+            foreach (Mob otherMob in _things.FindAll(otherMob => otherMob is Mob && otherMob != mob))
+            {
+                Rectangle hitbox1 = new Rectangle(otherMob.CollisionBox.X + (int) otherMob.Position.X,
+                    otherMob.CollisionBox.Y + (int) otherMob.Position.Y,
+                    otherMob.CollisionBox.Width, otherMob.CollisionBox.Height);
+                Rectangle hitbox2 = new Rectangle(mob.CollisionBox.X + (int) mob.Position.X,
+                    mob.CollisionBox.Y + (int) mob.Position.Y,
+                    mob.CollisionBox.Width, mob.CollisionBox.Height);
+                if (hitbox1.Intersects(hitbox2))
+                {
+                    otherMob.Collide(mob, gameTime);
+                }
+            }
+            
         }
         
 #if DEBUG

@@ -1,7 +1,4 @@
-﻿using System.Resources;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ResourceManager = roguelitri.Service.ResourceManager;
+﻿using Microsoft.Xna.Framework;
 
 namespace roguelitri.Model.Things.Decals;
 

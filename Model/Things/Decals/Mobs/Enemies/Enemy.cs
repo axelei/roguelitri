@@ -9,9 +9,10 @@ public class Enemy : Mob
     
     private GameScene _gameScene;
 
-    public Enemy(GameScene gameScene)
+    public Enemy(GameScene gameScene) : base()
     {
         Ia = new BasicIa(gameScene);
+        _gameScene = gameScene;
     }
     
     public override void Update(GameTime gameTime)

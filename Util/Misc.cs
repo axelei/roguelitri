@@ -43,4 +43,15 @@ public static class Misc
     {
         return (int) Math.Round((double) number / multiple) * multiple;
     }
+
+    public static double Angle(Vector2 vector1, Vector2 vector2)
+    {
+        return Math.Atan2(vector1.Y - vector2.Y, vector1.X - vector2.X);
+    }
+
+    public static Vector2 AngleVector(Vector2 vector1, Vector2 vector2)
+    {
+        double angle = Angle(vector1, vector2);
+        return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+    }
 }

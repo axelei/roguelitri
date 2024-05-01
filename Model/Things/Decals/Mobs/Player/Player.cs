@@ -11,5 +11,6 @@ public class Player : Mob
         Speed = 0.3f;
         Texture = ResourceManager.Gfx.Player;
         PlayerIndex = playerIndex;
+        CollisionFactor = 0.5f;
     }
 }

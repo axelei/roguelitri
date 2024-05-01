@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using roguelitri.Model.Scenes;
+using roguelitri.Util;
 
 namespace roguelitri.Model.Things.Decals.Mobs.Ia;
 
@@ -15,9 +16,7 @@ public class BasicIa : IA
     
     public Vector2 MovementVector(Vector2 currentPosition)
     {
-        Vector2 playerPosition = _gameScene.Player.Position;
-        double angle = Math.Atan2(playerPosition.Y - currentPosition.Y, playerPosition.X - currentPosition.X);
-        return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+        return Misc.AngleVector(_gameScene.Player.Position, currentPosition);
     }
 
     public void Update()
