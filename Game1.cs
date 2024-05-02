@@ -15,6 +15,9 @@ namespace roguelitri;
 
 public class Game1 : Game
 {
+
+    public const string ContentFolder = "Content";
+    
     public static GraphicsDeviceManager Graphics { get; private set; }
     public static Settings Settings;
     public static GumProjectSave GumProject { get; private set; }
@@ -67,7 +70,7 @@ public class Game1 : Game
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
         
-        FmodManager.Init(_nativeLibrary, FmodInitMode.Core, "Content");
+        FmodManager.Init(_nativeLibrary, FmodInitMode.Core, ContentFolder);
         
         _debugText = Misc.AddText("FPS: -", new Vector2(0, 0));
         

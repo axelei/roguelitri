@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Service;
@@ -54,4 +55,5 @@ public static class Misc
         double angle = Angle(vector1, vector2);
         return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
     }
+
 }

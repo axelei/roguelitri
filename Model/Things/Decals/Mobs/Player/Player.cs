@@ -9,14 +9,20 @@ public class Player : Mob
 {
     public int PlayerIndex;
     public float Defense = 0f;
-    public float InvulnerabilityTime = 0;
+    public float InvulnerabilityTime;
     public bool Invulnerable => InvulnerabilityTime > 0;
     
-    public Player(int playerIndex)
+    public Player(int playerIndex) : this()
     {
+        PlayerIndex = playerIndex;
+    }
+    
+    public Player() : base()
+    {
+        Important = true;
         Speed = 0.3f;
         Texture = ResourcesManager.Gfx.Player;
-        PlayerIndex = playerIndex;
+        CalculateHitBox();
         CollisionFactor = 0.5f;
     }
 

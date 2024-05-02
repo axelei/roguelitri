@@ -11,6 +11,7 @@ public static class ResourcesManager
 {
 
     public static Texture2D Pixel;
+    public static Texture2D Rectangle;
     
     public static class Fonts
     {
@@ -51,14 +52,17 @@ public static class ResourcesManager
         Pixel = new Texture2D(Game1.Graphics.GraphicsDevice, 1, 1);
         Pixel.SetData(new [] {Color.White});
         
+        Rectangle = new Texture2D(Game1.Graphics.GraphicsDevice, 1, 1);
+        Rectangle.SetData(new[] { Color.White });
+        
         //// Music
-        Music.IntoTheNight = CoreSystem.LoadStreamedSound("raw/music/The_Spin_Wires_-_Into_The_Night.mp3");
+        Music.IntoTheNight = CoreSystem.LoadStreamedSound("music/The_Spin_Wires_-_Into_The_Night.mp3");
 
         //// Gfx
         Gfx.Player = content.Load<Texture2D>("gfx/player");
         // Title
         Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo");
-        Gfx.Title.Background = LoadFromFile("Content/raw/title/title_background.png");
+        Gfx.Title.Background = LoadFromFile(Game1.ContentFolder + "/gfx/raw/title_background.png");
         
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");

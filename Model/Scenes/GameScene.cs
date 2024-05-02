@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using FmodForFoxes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
@@ -25,7 +26,7 @@ public class GameScene : Scene
     private Camera2D _camera;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
-    private TextRuntime _posText;
+    private TextRuntime _debugText;
     
     private readonly List<Thing> _things = new ();
     
@@ -45,8 +46,8 @@ public class GameScene : Scene
 
         _things.Add(Player);
 
-        _posText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
-        _uiElements.Add(_posText);
+        _debugText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
+        _uiElements.Add(_debugText);
         
 #if DEBUG
 #endif
@@ -61,6 +62,11 @@ public class GameScene : Scene
         
         foreach (Mob mob in _things.FindAll(mob => mob is Mob))
         {
+            if (MobIsFarUnimportant(mob))
+            {
+                _things.Remove(mob);
+                continue;
+            }
             mob.Update(gameTime);
             if (mob.Solid)
             {
@@ -69,7 +75,7 @@ public class GameScene : Scene
         }
         
 #if DEBUG
-        _posText.Text = $"POS X/Y: {Player.Position.X}/{Player.Position.Y}";
+        _debugText.Text = $"POS X/Y: {Player.Position.X:0000}/{Player.Position.Y:0000} THINGS: {_things.Count}";
 #endif
 
     }
@@ -119,6 +125,13 @@ public class GameScene : Scene
         {
             spriteBatch.Draw(thing.Texture, thing.Position, new Rectangle(0,0,thing.Texture.Width, thing.Texture.Height), 
                 Color.White, 0f, Vector2.Zero, thing.Scale, SpriteEffects.None, 0f);
+#if DEBUG
+            if (thing is Mob mob)
+            {
+                Rectangle pos = new Rectangle((int) mob.Position.X, (int) mob.Position.Y, mob.HitBox.Width, mob.HitBox.Height);
+                spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
+            }
+#endif
         }
     }
 
@@ -145,6 +158,11 @@ public class GameScene : Scene
         
     }
 
+    private bool MobIsFarUnimportant(Mob mob)
+    {
+        return !mob.Important && Vector2.Distance(mob.Position, Player.Position) > Misc.NativeWidth * 2;
+    }
+
     private void CalculateCollisions(Mob mob, GameTime gameTime)
     {
         foreach (Mob otherMob in _things.FindAll(otherMob => otherMob is Mob && otherMob != mob))
@@ -153,13 +171,13 @@ public class GameScene : Scene
             {
                 continue;
             }
-            Rectangle hitbox1 = new Rectangle(otherMob.CollisionBox.X + (int) otherMob.Position.X,
-                otherMob.CollisionBox.Y + (int) otherMob.Position.Y,
-                otherMob.CollisionBox.Width, otherMob.CollisionBox.Height);
-            Rectangle hitbox2 = new Rectangle(mob.CollisionBox.X + (int) mob.Position.X,
-                mob.CollisionBox.Y + (int) mob.Position.Y,
-                mob.CollisionBox.Width, mob.CollisionBox.Height);
-            if (hitbox1.Intersects(hitbox2))
+            Rectangle hitBox1 = new Rectangle(otherMob.HitBox.X + (int) otherMob.Position.X,
+                otherMob.HitBox.Y + (int) otherMob.Position.Y,
+                otherMob.HitBox.Width, otherMob.HitBox.Height);
+            Rectangle hitBox2 = new Rectangle(mob.HitBox.X + (int) mob.Position.X,
+                mob.HitBox.Y + (int) mob.Position.Y,
+                mob.HitBox.Width, mob.HitBox.Height);
+            if (hitBox1.Intersects(hitBox2))
             {
                 otherMob.Collide(mob, gameTime);
             }

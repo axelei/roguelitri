@@ -8,15 +8,14 @@ namespace roguelitri.Model.Things.Decals.Mobs;
 public class Mob : Decal
 {
     public float Health = 100;
-    public bool Important;
-    public float Speed = 0.15f;
+    public float Speed = 0.1f;
     public float Attack = 1f;
 
     protected IA Ia = new NoIa();
 
     public float CollisionFactor = 1f;
 
-    public Mob()
+    public Mob() : base()
     {
         Solid = true;
     }
