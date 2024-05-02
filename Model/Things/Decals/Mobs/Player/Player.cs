@@ -22,8 +22,8 @@ public class Player : Mob
         Important = true;
         Speed = 0.3f;
         Texture = ResourcesManager.Gfx.Player;
+        CollisionFactor = 0.3f;
         CalculateHitBox();
-        CollisionFactor = 0.5f;
     }
 
     public override void Update(GameTime gameTime)

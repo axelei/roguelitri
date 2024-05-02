@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using FmodForFoxes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
@@ -28,7 +27,7 @@ public class GameScene : Scene
 
     private TextRuntime _debugText;
     
-    private readonly List<Thing> _things = new ();
+    private readonly List<Mob> _mobs = new ();
     
     public override void Initialize()
     {
@@ -44,7 +43,7 @@ public class GameScene : Scene
         _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         _camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
-        _things.Add(Player);
+        _mobs.Add(Player);
 
         _debugText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
         _uiElements.Add(_debugText);
@@ -60,11 +59,12 @@ public class GameScene : Scene
 
         _camera.Position = Player.Position;
         
-        foreach (Mob mob in _things.FindAll(mob => mob is Mob))
+        List<Mob> mobsToRemove = new ();
+        foreach (Mob mob in _mobs)
         {
-            if (MobIsFarUnimportant(mob))
+            if (MobIsFarUnimportant(mob) || mob.Dead)
             {
-                _things.Remove(mob);
+                mobsToRemove.Add(mob);
                 continue;
             }
             mob.Update(gameTime);
@@ -73,9 +73,14 @@ public class GameScene : Scene
                 CalculateCollisions(mob, gameTime);
             }
         }
+        foreach (Mob mob in mobsToRemove)
+        {
+            _mobs.Remove(mob);
+        }
+
         
 #if DEBUG
-        _debugText.Text = $"POS X/Y: {Player.Position.X:0000}/{Player.Position.Y:0000} THINGS: {_things.Count}";
+        _debugText.Text = $"POS X/Y: {Player.Position.X:0000}/{Player.Position.Y:0000} THINGS: {_mobs.Count}";
 #endif
 
     }
@@ -121,16 +126,13 @@ public class GameScene : Scene
     
     private void DrawThings(SpriteBatch spriteBatch)
     {
-        foreach (Thing thing in _things)
+        foreach (Mob mob in _mobs)
         {
-            spriteBatch.Draw(thing.Texture, thing.Position, new Rectangle(0,0,thing.Texture.Width, thing.Texture.Height), 
-                Color.White, 0f, Vector2.Zero, thing.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
+                mob.Color, 0f, Vector2.Zero, mob.Scale, SpriteEffects.None, 0f);
 #if DEBUG
-            if (thing is Mob mob)
-            {
                 Rectangle pos = new Rectangle((int) mob.Position.X, (int) mob.Position.Y, mob.HitBox.Width, mob.HitBox.Height);
                 spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
-            }
 #endif
         }
     }
@@ -152,8 +154,12 @@ public class GameScene : Scene
 
         if (Input.AnyKeyPressed(Keys.E))
         {
-            Enemy enemy = new Enemy(this);
-            _things.Add(enemy);
+            Random rnd = new Random();
+            Enemy enemy = new Enemy(this)
+            {
+                Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400))
+            };
+            _mobs.Add(enemy);
         }
         
     }
@@ -165,9 +171,9 @@ public class GameScene : Scene
 
     private void CalculateCollisions(Mob mob, GameTime gameTime)
     {
-        foreach (Mob otherMob in _things.FindAll(otherMob => otherMob is Mob && otherMob != mob))
+        foreach (Mob otherMob in _mobs)
         {
-            if (!mob.Solid)
+            if (!mob.Solid || mob == otherMob)
             {
                 continue;
             }
