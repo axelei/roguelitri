@@ -22,7 +22,7 @@ public class TitleScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        if (Input.AnyKeyPressed())
+        if (InputHelper.AnyKeyPressed())
         {
             SceneManager.SetScene(new GameScene());
         }

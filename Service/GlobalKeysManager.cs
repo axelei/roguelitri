@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Apos.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +13,17 @@ public class GlobalKeysManager
     
     private readonly Game1 _gameInstance;
     
+    private readonly ICondition _exitCondition =
+        new AnyCondition(
+            new AllCondition(new KeyboardCondition(Keys.RightAlt), new KeyboardCondition(Keys.F4)),
+            new AllCondition(new KeyboardCondition(Keys.LeftAlt), new KeyboardCondition(Keys.F4)),
+            new KeyboardCondition(Keys.Escape),
+            new GamePadCondition(GamePadButton.Back, 0)
+        );
+    private readonly ICondition _fullScreenCondition = new AllCondition(
+        new KeyboardCondition(Keys.LeftAlt), new KeyboardCondition(Keys.Enter));
+    private readonly ICondition _screenshotCondition = new KeyboardCondition(Keys.F12);
+    
     public GlobalKeysManager(Game1 gameInstance)
     {
         _gameInstance = gameInstance;
@@ -21,38 +33,33 @@ public class GlobalKeysManager
     public void Update()
     {
         // Exit
-        if (Input.ButtonPressed(PlayerIndex.One, Buttons.Back) || Input.AllKeyPressed(Keys.Escape) || Input.AllKeyPressed(Keys.LeftAlt, Keys.F4))
+        if (_exitCondition.Pressed())
         {
             _gameInstance.Exit();
         }
 
         // Full screen
-        if ((Input.AllKeyPressed(Keys.LeftAlt) || Input.AllKeyPressed(Keys.RightAlt)) && Input.AllKeyPressed(Keys.Enter))
+        if (_fullScreenCondition.Pressed())
         {
             Game1.Graphics.ToggleFullScreen();
         }
 
         // Screenshot
-        if (Input.HasBeenPressed(Keys.F12))
+        if (_screenshotCondition.Pressed())
         {
             var filename = $"{Misc.AppName}_{GameUtils.EpochMillis()}.png";
-            var graphics = Game1.Graphics;
-            var presentationParams = graphics.GraphicsDevice.PresentationParameters;
+            Logger.Log($"Taking screenshot: {filename}");
 
-            int[] backBuffer = new int[presentationParams.BackBufferWidth * presentationParams.BackBufferHeight];
-            graphics.GraphicsDevice.GetBackBufferData(backBuffer);
+            Texture2D screenshot = Misc.GetScreenshot();
+            using FileStream stream = File.OpenWrite(filename);
+            screenshot.SaveAsPng(stream, screenshot.Width, screenshot.Height);
 
-            using var texture = new Texture2D(graphics.GraphicsDevice, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight, false, presentationParams.BackBufferFormat);
-            texture.SetData(backBuffer);
-
-            using var stream = File.OpenWrite(filename);
-
-            texture.SaveAsPng(stream, presentationParams.BackBufferWidth, presentationParams.BackBufferHeight);
-
-            Logger.Log("Wrote screenshot: " + filename);
+            Logger.Log($"Wrote screenshot: {filename}");
         }
         
     }
+    
+
 
 
 }

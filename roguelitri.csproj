@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Apos.Spatial" Version="0.4.2" />
+    <PackageReference Include="Apos.Shapes" Version="0.1.8" />
+    <PackageReference Include="Apos.Input" Version="2.4.2" />
     <PackageReference Include="FmodForFoxes" Version="3.1.0" />
     <PackageReference Include="FmodForFoxes.Desktop" Version="3.1.0" />
     <PackageReference Include="Gum.MonoGame" Version="2024.4.29.2" />

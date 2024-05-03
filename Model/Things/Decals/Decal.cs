@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
+using roguelitri.Util;
 
 namespace roguelitri.Model.Things.Decals;
 
@@ -9,6 +10,7 @@ public class Decal : Thing
     private const float HitBoxFactor = 1.10f;
 
     public RectangleF HitBox;
+    public RectangleF HitBoxMoved => Misc.MoveRect(HitBox, Position);
     public int Leaf;
     
     public bool Solid;

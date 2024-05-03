@@ -70,4 +70,16 @@ public static class Misc
     {
         return new RectangleF(rectangleF.X + vector.X, rectangleF.Y + vector.Y, rectangleF.Width, rectangleF.Height);
     }
+
+    public static Texture2D GetScreenshot()
+    {
+        Color[] textureData = new Color[Game1.RenderTarget.Width * Game1.RenderTarget.Height];
+        Game1.RenderTarget.GetData(textureData);
+
+        Texture2D texture = new Texture2D(Game1.Graphics.GraphicsDevice, Game1.RenderTarget.Width, Game1.RenderTarget.Height);
+        texture.SetData(textureData);
+
+        return texture;
+
+    }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Apos.Input;
+using Apos.Shapes;
 using Apos.Spatial;
 using FmodForFoxes;
 using Gum.Wireframe;
@@ -14,6 +16,7 @@ using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Model.Things.Decals.Mobs.Player;
 using roguelitri.Service;
 using roguelitri.Util;
+using InputHelper = roguelitri.Util.InputHelper;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace roguelitri.Model.Scenes;
@@ -28,8 +31,12 @@ public class GameScene : Scene
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _debugText;
+    private readonly ShapeBatch _sb = new (Game1.Graphics.GraphicsDevice, SceneManager.Content);
     
     private readonly AABBTree<Mob> _mobs = new (1024, 128, 1024);
+    
+    private readonly ICondition _pauseCondition = new KeyboardCondition(Keys.P);
+    private readonly ICondition _createEnemyCondition = new KeyboardCondition(Keys.E);
     
     public override void Initialize()
     {
@@ -46,7 +53,7 @@ public class GameScene : Scene
         Player = new Player(0);
         Player.Leaf = _mobs.Add(Player.HitBox, Player);
 
-        _debugText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
+        _debugText = Misc.AddText("", new Vector2(0, 25));
         _uiElements.Add(_debugText);
         
 #if DEBUG
@@ -72,8 +79,7 @@ public class GameScene : Scene
         
         foreach (Mob mob in _mobs.ToList().Where(mob => mob.Solid))
         {
-            RectangleF hitBox = Misc.MoveRect(mob.HitBox, mob.Position);
-            _mobs.Update(mob.Leaf, hitBox);
+            _mobs.Update(mob.Leaf, mob.HitBoxMoved);
         }
 
         foreach (Mob mob in _mobs.Where(mob => mob.Solid))
@@ -97,11 +103,15 @@ public class GameScene : Scene
         DrawFloor(spriteBatch);
         DrawThings(spriteBatch);
         
-        foreach (var rect in _mobs.DebugAllNodes()) {
-            //_sb.BorderRectangle(rect.TopLeft, rect.Size, Color.White * 0.3f);
-        }
-        
         spriteBatch.End();
+
+#if DEBUG
+        _sb.Begin(view: _camera.TransformationMatrix);
+        foreach (RectangleF rect in _mobs.DebugAllNodes()) {
+            _sb.BorderRectangle(rect.TopLeft, rect.Size, Color.White * 0.3f);
+        }
+        _sb.End();
+#endif
     }
 
     public override void Dispose()
@@ -133,9 +143,8 @@ public class GameScene : Scene
     
     private void DrawThings(SpriteBatch spriteBatch)
     {
-        foreach (Mob mob in _mobs)
+        foreach (Mob mob in _mobs.Where(MobInCameraView))
         {
-            // TODO skip if not in camera view
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
                 mob.Color, 0f, Vector2.Zero, mob.Scale, SpriteEffects.None, 0f);
 #if DEBUG
@@ -144,33 +153,42 @@ public class GameScene : Scene
 #endif
         }
     }
+    
+    private bool MobInCameraView(Mob mob)
+    {
+        //TODO: Implement camera view check
+        return true;
+    }
 
     private void UpdateControls(GameTime gameTime)
     {
+        if (_pauseCondition.Pressed())
+        {
+            SceneManager.PushScene(new PauseScene(Misc.GetScreenshot()));
+        }
+        
         Vector2 moveVector = Vector2.Zero;
 
-        if (Input.AnyKeyPressed(Keys.Up, Keys.W)) moveVector.Y -= 1;
-        if (Input.AnyKeyPressed(Keys.Down, Keys.S)) moveVector.Y += 1;
-        if (Input.AnyKeyPressed(Keys.Left, Keys.A)) moveVector.X -= 1;
-        if (Input.AnyKeyPressed(Keys.Right, Keys.D)) moveVector.X += 1;
+        if (InputHelper.KeysPressed(Keys.Up, Keys.W)) moveVector.Y -= 1;
+        if (InputHelper.KeysPressed(Keys.Down, Keys.S)) moveVector.Y += 1;
+        if (InputHelper.KeysPressed(Keys.Left, Keys.A)) moveVector.X -= 1;
+        if (InputHelper.KeysPressed(Keys.Right, Keys.D)) moveVector.X += 1;
 
         if (moveVector != Vector2.Zero)
         {
             moveVector.Normalize();
             Player.Position += moveVector * Player.Speed * gameTime.ElapsedGameTime.Milliseconds;
-            RectangleF hitBox = Misc.MoveRect(Player.HitBox, Player.Position);
-            _mobs.Update(Player.Leaf, hitBox);
+            _mobs.Update(Player.Leaf, Player.HitBoxMoved);
         }
 
-        if (Input.HasBeenPressed(Keys.E) || Input.AnyKeyPressed(Keys.R))
+        if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
             Random rnd = new Random();
             Enemy enemy = new Enemy(this)
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400))
             };
-            RectangleF hitBox = Misc.MoveRect(enemy.HitBox, enemy.Position);
-            enemy.Leaf = _mobs.Add(hitBox, enemy);
+            enemy.Leaf = _mobs.Add(enemy.HitBoxMoved, enemy);
         }
         
     }
@@ -182,7 +200,7 @@ public class GameScene : Scene
 
     private void CalculateCollisions(Mob mob, GameTime gameTime)
     {
-        foreach (Mob otherMob in _mobs.Query(mob.HitBox).Where(otherMob => otherMob.Solid))
+        foreach (Mob otherMob in _mobs.Query(mob.HitBoxMoved).Where(otherMob => otherMob.Solid))
         {
             if (otherMob.Id == mob.Id) continue;
             otherMob.Collide(mob, gameTime);

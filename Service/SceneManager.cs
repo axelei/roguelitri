@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using roguelitri.Model.Scenes;
 
@@ -9,7 +10,9 @@ namespace roguelitri.Service;
 public static class SceneManager
 {
 
-    private static readonly Stack<Scene> SceneStack = new Stack<Scene>();
+    private static readonly Stack<Scene> SceneStack = new ();
+
+    public static ContentManager Content;
 
     public static void SetScene(Scene scene)
     {
@@ -28,10 +31,11 @@ public static class SceneManager
         SceneStack.Push(scene);
     }
 
-    public static void PopScene(Scene scene)
+    public static Scene PopScene()
     {
         Scene pop = SceneStack.Pop();
         pop.Dispose();
+        return pop;
     }
 
     public static void Update(GameTime gameTime)
