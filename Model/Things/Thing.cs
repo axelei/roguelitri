@@ -10,7 +10,7 @@ public class Thing : IEqualityComparer<Thing>
 {
     public Texture2D Texture = ResourcesManager.Gfx.Textures.Default;
     public Vector2 Scale = Vector2.One;
-    public Vector2 Position;
+    public Vector2 Position = Vector2.Zero;
     public Color Color = Color.White;
     public bool Dead;
     public Guid Id = Guid.NewGuid();

@@ -26,10 +26,10 @@ public class Decal : Thing
 
     protected void CalculateHitBox()
     {
-        int collisionBoxHeight = (int) (Texture.Height / HitBoxFactor);
-        int collisionBoxWidth = (int) (Texture.Width / HitBoxFactor);
-        int collisionBoxStartXHeight = Texture.Height - collisionBoxHeight;
-        int collisionBoxStartXWidth = Texture.Width - collisionBoxWidth;
+        float collisionBoxHeight = Texture.Height / HitBoxFactor;
+        float collisionBoxWidth = Texture.Width / HitBoxFactor;
+        float collisionBoxStartXHeight = (Texture.Height - collisionBoxHeight) / 2;
+        float collisionBoxStartXWidth = (Texture.Width - collisionBoxWidth) / 2;
         HitBox = new RectangleF(collisionBoxStartXWidth, collisionBoxStartXHeight, collisionBoxHeight, collisionBoxWidth);
     }
 }

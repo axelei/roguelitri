@@ -29,14 +29,12 @@ public class GameScene : Scene
 
     private TextRuntime _debugText;
     
-    private readonly AABBTree<Mob> _mobs = new (1024, 100, 1024);
+    private readonly AABBTree<Mob> _mobs = new (1024, 128, 1024);
     
     public override void Initialize()
     {
-        Player = new Player(0);
         CurrLevel = LevelManager.LoadLevel("Content/lvl/test.json");
         CurrLevel.Random = new Random(CurrLevel.Seed);
-        
 
         _playing = ResourcesManager.Music.IntoTheNight.Play();
         _playing.Volume = Game1.Settings.MusicVolume;
@@ -45,6 +43,7 @@ public class GameScene : Scene
         _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         _camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
+        Player = new Player(0);
         Player.Leaf = _mobs.Add(Player.HitBox, Player);
 
         _debugText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
@@ -61,19 +60,14 @@ public class GameScene : Scene
 
         _camera.Position = Player.Position;
         
-        HashSet<Mob> mobsToRemove = new ();
-        foreach (Mob mob in _mobs)
+        foreach (Mob mob in _mobs.ToList())
         {
             if (MobIsFarUnimportant(mob) || mob.Dead)
             {
-                mobsToRemove.Add(mob);
+                _mobs.Remove(mob.Leaf);
                 continue;
             }
             mob.Update(gameTime);
-        }
-        foreach (Mob mob in mobsToRemove)
-        {
-            _mobs.Remove(mob.Leaf);
         }
         
         foreach (Mob mob in _mobs.ToList().Where(mob => mob.Solid))
@@ -89,7 +83,7 @@ public class GameScene : Scene
 
         
 #if DEBUG
-        _debugText.Text = $"POS X/Y: {Player.Position.X:0000}/{Player.Position.Y:0000} THINGS: {_mobs.Count}";
+        _debugText.Text = $"POS X/Y: {Player.Position.X:0000.00}/{Player.Position.Y:0000.00} MOBS: {_mobs.Count:0000}";
 #endif
 
     }
@@ -102,6 +96,10 @@ public class GameScene : Scene
         // Draw game world
         DrawFloor(spriteBatch);
         DrawThings(spriteBatch);
+        
+        foreach (var rect in _mobs.DebugAllNodes()) {
+            //_sb.BorderRectangle(rect.TopLeft, rect.Size, Color.White * 0.3f);
+        }
         
         spriteBatch.End();
     }
