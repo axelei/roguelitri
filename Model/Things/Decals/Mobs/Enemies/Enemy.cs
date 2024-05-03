@@ -27,4 +27,5 @@ public class Enemy : Mob
             Position += movementVector * Speed * gameTime.ElapsedGameTime.Milliseconds;
         }
     }
+    
 }

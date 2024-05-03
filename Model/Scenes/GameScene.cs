@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Apos.Spatial;
 using FmodForFoxes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGameGum.GueDeriving;
-using roguelitri.Model.Things;
 using roguelitri.Model.Things.Decals.Mobs;
 using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Model.Things.Decals.Mobs.Player;
@@ -27,7 +29,7 @@ public class GameScene : Scene
 
     private TextRuntime _debugText;
     
-    private readonly List<Mob> _mobs = new ();
+    private readonly AABBTree<Mob> _mobs = new (1024, 100, 1024);
     
     public override void Initialize()
     {
@@ -43,7 +45,7 @@ public class GameScene : Scene
         _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         _camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
-        _mobs.Add(Player);
+        Player.Leaf = _mobs.Add(Player.HitBox, Player);
 
         _debugText = Misc.AddText("POS X/Y: ", new Vector2(0, 25));
         _uiElements.Add(_debugText);
@@ -59,7 +61,7 @@ public class GameScene : Scene
 
         _camera.Position = Player.Position;
         
-        List<Mob> mobsToRemove = new ();
+        HashSet<Mob> mobsToRemove = new ();
         foreach (Mob mob in _mobs)
         {
             if (MobIsFarUnimportant(mob) || mob.Dead)
@@ -68,14 +70,21 @@ public class GameScene : Scene
                 continue;
             }
             mob.Update(gameTime);
-            if (mob.Solid)
-            {
-                CalculateCollisions(mob, gameTime);
-            }
         }
         foreach (Mob mob in mobsToRemove)
         {
-            _mobs.Remove(mob);
+            _mobs.Remove(mob.Leaf);
+        }
+        
+        foreach (Mob mob in _mobs.ToList().Where(mob => mob.Solid))
+        {
+            RectangleF hitBox = Misc.MoveRect(mob.HitBox, mob.Position);
+            _mobs.Update(mob.Leaf, hitBox);
+        }
+
+        foreach (Mob mob in _mobs.Where(mob => mob.Solid))
+        {
+            CalculateCollisions(mob, gameTime);
         }
 
         
@@ -128,10 +137,11 @@ public class GameScene : Scene
     {
         foreach (Mob mob in _mobs)
         {
+            // TODO skip if not in camera view
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
                 mob.Color, 0f, Vector2.Zero, mob.Scale, SpriteEffects.None, 0f);
 #if DEBUG
-                Rectangle pos = new Rectangle((int) mob.Position.X, (int) mob.Position.Y, mob.HitBox.Width, mob.HitBox.Height);
+                Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
                 spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
 #endif
         }
@@ -150,16 +160,19 @@ public class GameScene : Scene
         {
             moveVector.Normalize();
             Player.Position += moveVector * Player.Speed * gameTime.ElapsedGameTime.Milliseconds;
+            RectangleF hitBox = Misc.MoveRect(Player.HitBox, Player.Position);
+            _mobs.Update(Player.Leaf, hitBox);
         }
 
-        if (Input.AnyKeyPressed(Keys.E))
+        if (Input.HasBeenPressed(Keys.E) || Input.AnyKeyPressed(Keys.R))
         {
             Random rnd = new Random();
             Enemy enemy = new Enemy(this)
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400))
             };
-            _mobs.Add(enemy);
+            RectangleF hitBox = Misc.MoveRect(enemy.HitBox, enemy.Position);
+            enemy.Leaf = _mobs.Add(hitBox, enemy);
         }
         
     }
@@ -171,22 +184,10 @@ public class GameScene : Scene
 
     private void CalculateCollisions(Mob mob, GameTime gameTime)
     {
-        foreach (Mob otherMob in _mobs)
+        foreach (Mob otherMob in _mobs.Query(mob.HitBox).Where(otherMob => otherMob.Solid))
         {
-            if (!mob.Solid || mob == otherMob)
-            {
-                continue;
-            }
-            Rectangle hitBox1 = new Rectangle(otherMob.HitBox.X + (int) otherMob.Position.X,
-                otherMob.HitBox.Y + (int) otherMob.Position.Y,
-                otherMob.HitBox.Width, otherMob.HitBox.Height);
-            Rectangle hitBox2 = new Rectangle(mob.HitBox.X + (int) mob.Position.X,
-                mob.HitBox.Y + (int) mob.Position.Y,
-                mob.HitBox.Width, mob.HitBox.Height);
-            if (hitBox1.Intersects(hitBox2))
-            {
-                otherMob.Collide(mob, gameTime);
-            }
+            if (otherMob.Id == mob.Id) continue;
+            otherMob.Collide(mob, gameTime);
         }
     }
     

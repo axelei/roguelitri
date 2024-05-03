@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 
 namespace roguelitri.Model.Things.Decals;
 
@@ -7,8 +8,9 @@ public class Decal : Thing
     
     private const float HitBoxFactor = 1.10f;
 
-    public Rectangle HitBox;
-
+    public RectangleF HitBox;
+    public int Leaf;
+    
     public bool Solid;
     public float Depth = 0;
     public bool Important;
@@ -28,6 +30,6 @@ public class Decal : Thing
         int collisionBoxWidth = (int) (Texture.Width / HitBoxFactor);
         int collisionBoxStartXHeight = Texture.Height - collisionBoxHeight;
         int collisionBoxStartXWidth = Texture.Width - collisionBoxWidth;
-        HitBox = new Rectangle(collisionBoxStartXWidth, collisionBoxStartXHeight, collisionBoxHeight, collisionBoxWidth);
+        HitBox = new RectangleF(collisionBoxStartXWidth, collisionBoxStartXHeight, collisionBoxHeight, collisionBoxWidth);
     }
 }

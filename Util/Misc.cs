@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Service;
@@ -55,5 +56,18 @@ public static class Misc
         double angle = Angle(vector1, vector2);
         return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
     }
+    
+    public static RectangleF CreateRect(Vector2 v1, Vector2 v2) {
+        float left = MathF.Min(v1.X, v2.X);
+        float right = MathF.Max(v1.X, v2.X);
+        float top = MathF.Min(v1.Y, v2.Y);
+        float bottom = MathF.Max(v1.Y, v2.Y);
 
+        return new RectangleF(left, top, right - left, bottom - top);
+    }
+
+    public static RectangleF MoveRect(RectangleF rectangleF, Vector2 vector)
+    {
+        return new RectangleF(rectangleF.X + vector.X, rectangleF.Y + vector.Y, rectangleF.Width, rectangleF.Height);
+    }
 }

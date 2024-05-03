@@ -10,6 +10,7 @@ public class Mob : Decal
     public float Health = 100;
     public float Speed = 0.1f;
     public float Attack = 1f;
+    
 
     protected IA Ia = new NoIa();
 
