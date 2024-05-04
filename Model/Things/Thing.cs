@@ -14,6 +14,8 @@ public class Thing : IEqualityComparer<Thing>
     public Color Color = Color.White;
     public bool Dead;
     public Guid Id = Guid.NewGuid();
+    public int Leaf;
+    public float Rotation;
 
     public Thing()
     {

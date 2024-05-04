@@ -12,7 +12,6 @@ public class Decal : Thing
 
     public RectangleF HitBox;
     public RectangleF HitBoxMoved => Misc.MoveRect(HitBox, Position);
-    public int Leaf;
     
     public bool Solid;
     public float Depth = 0;

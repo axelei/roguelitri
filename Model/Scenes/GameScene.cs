@@ -142,21 +142,16 @@ public class GameScene : Scene
     
     private void DrawThings(SpriteBatch spriteBatch)
     {
-        foreach (Mob mob in _mobs.Where(MobInCameraView).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
+        RectangleF cameraRect = new RectangleF(_camera.Position.X - Misc.NativeWidth / 2f, _camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
+        foreach (Mob mob in _mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
         {
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
-                mob.Color, 0f, Vector2.Zero, mob.Scale, SpriteEffects.None, 0f);
+                mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, SpriteEffects.None, mob.Depth);
 #if DEBUG
                 Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
                 spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
 #endif
         }
-    }
-    
-    private bool MobInCameraView(Mob mob)
-    {
-        //TODO: Implement camera view check
-        return true;
     }
 
     private void UpdateControls(GameTime gameTime)
