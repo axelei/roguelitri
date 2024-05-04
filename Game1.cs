@@ -1,4 +1,5 @@
 ﻿using System;
+using Apos.Input;
 using FmodForFoxes;
 using Gum.DataTypes;
 using Gum.Managers;
@@ -10,6 +11,7 @@ using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
 using roguelitri.Service;
 using roguelitri.Util;
+using InputHelper = Apos.Input.InputHelper;
 
 namespace roguelitri;
 
@@ -24,7 +26,7 @@ public class Game1 : Game
     
     private SpriteBatch _spriteBatch;
     private readonly INativeFmodLibrary _nativeLibrary;
-    private RenderTarget2D _renderTarget; // As shown in https://www.youtube.com/watch?v=Zla4q0Z6Zwc
+    public static RenderTarget2D RenderTarget; // As shown in https://www.youtube.com/watch?v=Zla4q0Z6Zwc
     private Rectangle _renderDestination;
 
     private readonly GlobalKeysManager _globalKeysManager;
@@ -61,7 +63,7 @@ public class Game1 : Game
         CalculateRenderDestination();
         Graphics.GraphicsDevice.Viewport = new Viewport(_renderDestination);
         
-        _renderTarget = new RenderTarget2D(GraphicsDevice, Misc.NativeWidth, Misc.NativeHeight);
+        RenderTarget = new RenderTarget2D(GraphicsDevice, Misc.NativeWidth, Misc.NativeHeight);
         
         SystemManagers.Default = new SystemManagers(); 
         SystemManagers.Default.Initialize(Graphics.GraphicsDevice, fullInstantiation: true);
@@ -84,12 +86,16 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
         SceneManager.SetScene(new TitleScene());
+        SceneManager.Content = Content;
+        
+        InputHelper.Setup(this);
         
         base.LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
     {
+        InputHelper.UpdateSetup();
         _globalKeysManager.Update();
 
         SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
@@ -97,13 +103,14 @@ public class Game1 : Game
         
         SceneManager.Update(gameTime);
 
+        InputHelper.UpdateCleanup();
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        GraphicsDevice.SetRenderTarget(_renderTarget);
+        GraphicsDevice.SetRenderTarget(RenderTarget);
 
         SceneManager.Draw(gameTime, _spriteBatch);
         SystemManagers.Default.Draw();
@@ -115,7 +122,7 @@ public class Game1 : Game
         GraphicsDevice.SetRenderTarget(null);
 
         _spriteBatch.Begin(samplerState : SamplerState.PointClamp);
-        _spriteBatch.Draw(_renderTarget, _renderDestination, Color.White);
+        _spriteBatch.Draw(RenderTarget, _renderDestination, Color.White);
         _spriteBatch.End();
         
         base.Draw(gameTime);

@@ -21,13 +21,10 @@ internal static class Program
 #if DEBUG
         catch (Exception exception)
         {
+            Console.WriteLine($"Exception caught: {exception.Message} -- see the logs.");
             Logger.Log("Exception: " + exception.Message);
-            foreach(string line in exception.StackTrace.Split("\n"))
-            {
-                Logger.Log(line);
-            }
-
-            throw;
+            Logger.Log(exception.StackTrace);
+            Logger.Dispose();
         }
 #endif
     }
