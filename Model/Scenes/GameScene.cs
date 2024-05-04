@@ -96,7 +96,6 @@ public class GameScene : Scene
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        //spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront, camera: _camera, blendState: BlendState.AlphaBlend);
         spriteBatch.Begin(transformMatrix: _camera.TransformationMatrix);
         
         // Draw game world
@@ -143,7 +142,7 @@ public class GameScene : Scene
     
     private void DrawThings(SpriteBatch spriteBatch)
     {
-        foreach (Mob mob in _mobs.Where(MobInCameraView))
+        foreach (Mob mob in _mobs.Where(MobInCameraView).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
         {
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
                 mob.Color, 0f, Vector2.Zero, mob.Scale, SpriteEffects.None, 0f);

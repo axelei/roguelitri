@@ -7,7 +7,8 @@ namespace roguelitri.Model.Things.Decals;
 public class Decal : Thing
 {
     
-    private const float HitBoxFactor = 1.10f;
+    private const float HitBoxFactor = 0.9f;
+    private const float HeightHitBoxFactor = 0.65f;
 
     public RectangleF HitBox;
     public RectangleF HitBoxMoved => Misc.MoveRect(HitBox, Position);
@@ -28,10 +29,10 @@ public class Decal : Thing
 
     protected void CalculateHitBox()
     {
-        float collisionBoxHeight = Texture.Height / HitBoxFactor;
-        float collisionBoxWidth = Texture.Width / HitBoxFactor;
-        float collisionBoxStartXHeight = (Texture.Height - collisionBoxHeight) / 2;
-        float collisionBoxStartXWidth = (Texture.Width - collisionBoxWidth) / 2;
-        HitBox = new RectangleF(collisionBoxStartXWidth, collisionBoxStartXHeight, collisionBoxHeight, collisionBoxWidth);
+        float collisionBoxHeight = Texture.Height * HitBoxFactor * HeightHitBoxFactor;
+        float collisionBoxWidth = Texture.Width * HitBoxFactor;
+        float collisionBoxStartTop = Texture.Height - collisionBoxHeight;
+        float collisionBoxStartLeft = (Texture.Width - collisionBoxWidth) / 2;
+        HitBox = new RectangleF(collisionBoxStartLeft, collisionBoxStartTop, collisionBoxWidth, collisionBoxHeight);
     }
 }
