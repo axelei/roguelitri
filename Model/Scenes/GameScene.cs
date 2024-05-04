@@ -33,7 +33,7 @@ public class GameScene : Scene
     private TextRuntime _debugText;
     private readonly ShapeBatch _sb = new (Game1.Graphics.GraphicsDevice, SceneManager.Content);
     
-    private readonly AABBTree<Mob> _mobs = new (1024, 128, 1024);
+    private readonly AABBTree<Mob> _mobs = new (1024, 0, 1024);
     
     private readonly ICondition _pauseCondition = new KeyboardCondition(Keys.P);
     private readonly ICondition _createEnemyCondition = new KeyboardCondition(Keys.E);
