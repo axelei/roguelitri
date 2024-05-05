@@ -1,6 +1,13 @@
-﻿namespace roguelitri.Model.Things.Decals.Bullets;
+﻿using Microsoft.Xna.Framework;
 
-public class EnemyBullet
+namespace roguelitri.Model.Things.Decals.Bullets;
+
+public class EnemyBullet : Bullet
 {
+    
+    public EnemyBullet()
+    {
+        Color = Color.Red;
+    }
     
 }

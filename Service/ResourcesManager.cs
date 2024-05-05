@@ -15,8 +15,8 @@ public static class ResourcesManager
     
     public static class Fonts
     {
-        public const string IbmVgaFont = "fonts/arcadepix.fnt";
-        public const string Arcade = "fonts/ibmVga.fnt";
+        public const string IbmVgaFont = "fonts/ibmVga.fnt";
+        public const string Arcade = "fonts/arcadepix.fnt";
     }
 
     public static class Music
@@ -32,6 +32,11 @@ public static class ResourcesManager
         {
             public static Texture2D Logo;
             public static Texture2D Background;
+        }
+        
+        public static class Sprites
+        {
+            public static Texture2D Bullet;
         }
 
         public static class Textures
@@ -50,7 +55,7 @@ public static class ResourcesManager
     {
         
         Pixel = new Texture2D(Game1.Graphics.GraphicsDevice, 1, 1);
-        Pixel.SetData(new [] {Color.White});
+        Pixel.SetData(new [] { Color.White });
         
         Rectangle = new Texture2D(Game1.Graphics.GraphicsDevice, 1, 1);
         Rectangle.SetData(new[] { Color.White });
@@ -67,6 +72,9 @@ public static class ResourcesManager
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");
         Gfx.Textures.Dirt = content.Load<Texture2D>("gfx/textures/dirt");
+        
+        // Sprites
+        Gfx.Sprites.Bullet = content.Load<Texture2D>("gfx/bullets/simple_bullet");
         
         //// Sfx
         // Player

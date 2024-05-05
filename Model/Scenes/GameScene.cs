@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGameGum.GueDeriving;
+using roguelitri.Model.Things.Decals.Bullets;
 using roguelitri.Model.Things.Decals.Mobs;
 using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Model.Things.Decals.Mobs.Player;
@@ -24,16 +25,17 @@ namespace roguelitri.Model.Scenes;
 public class GameScene : Scene
 {
     public Player Player { get; private set; }
-    public Level CurrLevel;
+    public Level CurrLevel { get; private set; }
+    public Camera2D Camera { get; private set; }
     
     private Channel _playing;
-    private Camera2D _camera;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _debugText;
     private readonly ShapeBatch _sb = new (Game1.Graphics.GraphicsDevice, SceneManager.Content);
     
-    private readonly AABBTree<Mob> _mobs = new (1024, 0, 1024);
+    public readonly AABBTree<Mob> Mobs = new (1024, 0, 1024);
+    public readonly HashSet<Bullet> Bullets = new ();
     
     private readonly ICondition _pauseCondition = new KeyboardCondition(Keys.P);
     private readonly ICondition _createEnemyCondition = new KeyboardCondition(Keys.E);
@@ -47,11 +49,11 @@ public class GameScene : Scene
         _playing.Volume = Game1.Settings.MusicVolume;
         _playing.Looping = true;
         
-        _camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
-        _camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
+        Camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
+        Camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
         Player = new Player(0);
-        Player.Leaf = _mobs.Add(Player.HitBox, Player);
+        Player.Leaf = Mobs.Add(Player.HitBox, Player);
 
         _debugText = Misc.AddText("", new Vector2(0, 25));
         _uiElements.Add(_debugText);
@@ -65,38 +67,47 @@ public class GameScene : Scene
     {
         UpdateControls(gameTime);
 
-        _camera.Position = Player.Position;
+        Camera.Position = Player.Position;
         
-        foreach (Mob mob in _mobs.ToList())
+        foreach (Mob mob in Mobs.ToList())
         {
             if (MobIsFarUnimportant(mob) || mob.Dead)
             {
-                _mobs.Remove(mob.Leaf);
+                Mobs.Remove(mob.Leaf);
                 continue;
             }
             mob.Update(gameTime);
         }
-        
-        foreach (Mob mob in _mobs.ToList().Where(mob => mob.Solid))
+        foreach (Mob mob in Mobs.ToList().Where(mob => mob.Solid))
         {
-            _mobs.Update(mob.Leaf, mob.HitBoxMoved);
+            Mobs.Update(mob.Leaf, mob.HitBoxMoved);
         }
-
-        foreach (Mob mob in _mobs.Where(mob => mob.Solid))
+        foreach (Mob mob in Mobs.Where(mob => mob.Solid))
         {
             CalculateCollisions(mob, gameTime);
         }
 
+        foreach (Bullet bullet in Bullets.ToList())
+        {
+            bullet.Update(gameTime);
+            CalculateBulletCollisions(bullet, gameTime);
+
+            if (bullet.Dead)
+            {
+                Bullets.Remove(bullet);
+            }
+        }
+
         
 #if DEBUG
-        _debugText.Text = $"POS X/Y: {Player.Position.X:0000.00}/{Player.Position.Y:0000.00} MOBS: {_mobs.Count:0000}";
+        _debugText.Text = $"POS X/Y: {Player.Position.X:0000.00}/{Player.Position.Y:0000.00} MOBS: {Mobs.Count:0000}";
 #endif
 
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        spriteBatch.Begin(transformMatrix: _camera.TransformationMatrix);
+        spriteBatch.Begin(transformMatrix: Camera.TransformationMatrix);
         
         // Draw game world
         DrawFloor(spriteBatch);
@@ -105,8 +116,8 @@ public class GameScene : Scene
         spriteBatch.End();
 
 #if DEBUG
-        _sb.Begin(view: _camera.TransformationMatrix);
-        foreach (RectangleF rect in _mobs.DebugAllNodes()) {
+        _sb.Begin(view: Camera.TransformationMatrix);
+        foreach (RectangleF rect in Mobs.DebugAllNodes()) {
             _sb.BorderRectangle(rect.TopLeft, rect.Size, Color.White * 0.3f);
         }
         _sb.End();
@@ -128,8 +139,8 @@ public class GameScene : Scene
         int textureX = ResourcesManager.Gfx.Textures.Dirt.Width;
         int textureY = ResourcesManager.Gfx.Textures.Dirt.Height;
         
-        int nearestX = Misc.NearestMultiple((int) _camera.Position.X, textureX);
-        int nearestY = Misc.NearestMultiple((int) _camera.Position.Y, textureY);
+        int nearestX = Misc.NearestMultiple((int) Camera.Position.X, textureX);
+        int nearestY = Misc.NearestMultiple((int) Camera.Position.Y, textureY);
         
         for (int x = nearestX - resX2; x < resX2 + nearestX; x += textureX)
         {
@@ -142,8 +153,8 @@ public class GameScene : Scene
     
     private void DrawThings(SpriteBatch spriteBatch)
     {
-        RectangleF cameraRect = new RectangleF(_camera.Position.X - Misc.NativeWidth / 2f, _camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
-        foreach (Mob mob in _mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
+        RectangleF cameraRect = new RectangleF(Camera.Position.X - Misc.NativeWidth / 2f, Camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
+        foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
         {
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
                 mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, SpriteEffects.None, mob.Depth);
@@ -151,6 +162,13 @@ public class GameScene : Scene
                 Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
                 spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
 #endif
+        }
+
+        foreach (Bullet bullet in Bullets)
+        {
+            spriteBatch.Draw(bullet.Texture, bullet.Position,
+                new Rectangle(0, 0, bullet.Texture.Width, bullet.Texture.Height),
+                bullet.Color, bullet.Rotation, Vector2.Zero, bullet.Scale, SpriteEffects.None, bullet.Depth);
         }
     }
 
@@ -161,19 +179,8 @@ public class GameScene : Scene
             SceneManager.PushScene(new PauseScene(Misc.GetScreenshot()));
         }
         
-        Vector2 moveVector = Vector2.Zero;
-
-        if (InputHelper.KeysPressed(Keys.Up, Keys.W)) moveVector.Y -= 1;
-        if (InputHelper.KeysPressed(Keys.Down, Keys.S)) moveVector.Y += 1;
-        if (InputHelper.KeysPressed(Keys.Left, Keys.A)) moveVector.X -= 1;
-        if (InputHelper.KeysPressed(Keys.Right, Keys.D)) moveVector.X += 1;
-
-        if (moveVector != Vector2.Zero)
-        {
-            moveVector.Normalize();
-            Player.Position += moveVector * Player.Speed * gameTime.ElapsedGameTime.Milliseconds;
-            _mobs.Update(Player.Leaf, Player.HitBoxMoved);
-        }
+        Player.Update(gameTime);
+        Mobs.Update(Player.Leaf, Player.HitBoxMoved);
 
         if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
@@ -182,8 +189,15 @@ public class GameScene : Scene
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400))
             };
-            enemy.Leaf = _mobs.Add(enemy.HitBoxMoved, enemy);
+            enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
         }
+        
+        if (InputHelper.KeysPressed(Keys.F))
+        {
+            PlayerBullet playerBullet = new PlayerBullet(this, Player.HitBoxMoved.Center);
+            Bullets.Add(playerBullet);
+        }
+
         
     }
 
@@ -194,10 +208,18 @@ public class GameScene : Scene
 
     private void CalculateCollisions(Mob mob, GameTime gameTime)
     {
-        foreach (Mob otherMob in _mobs.Query(mob.HitBoxMoved).Where(otherMob => otherMob.Solid))
+        foreach (Mob otherMob in Mobs.Query(mob.HitBoxMoved).Where(otherMob => otherMob.Solid))
         {
             if (otherMob.Id == mob.Id) continue;
             otherMob.Collide(mob, gameTime);
+        }
+    }
+
+    private void CalculateBulletCollisions(Bullet bullet, GameTime gameTime)
+    {
+        foreach (Mob otherMob in Mobs.Query(bullet.HitBoxMoved).Where(otherMob => otherMob.Solid))
+        {
+            bullet.Collide(otherMob, gameTime);
         }
     }
     

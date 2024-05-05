@@ -22,6 +22,7 @@ internal static class Program
         catch (Exception exception)
         {
             Console.WriteLine($"Exception caught: {exception.Message} -- see the logs.");
+            Console.WriteLine(exception.StackTrace);
             Logger.Log("Exception: " + exception.Message);
             Logger.Log(exception.StackTrace);
             Logger.Dispose();
