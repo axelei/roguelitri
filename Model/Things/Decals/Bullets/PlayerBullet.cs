@@ -8,7 +8,7 @@ namespace roguelitri.Model.Things.Decals.Bullets;
 
 public class PlayerBullet : Bullet
 {
-    public PlayerBullet(GameScene gameScene, Vector2 initialPosition) : base()
+    public PlayerBullet(GameScene gameScene, Vector2 initialPosition) : base(gameScene)
     {
         Position = initialPosition;
         Color = Color.Blue;

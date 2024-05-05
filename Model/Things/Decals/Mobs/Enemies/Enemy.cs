@@ -11,16 +11,23 @@ public class Enemy : Mob
     
     private GameScene _gameScene;
 
-    public Enemy(GameScene gameScene) : base()
+    public Enemy(GameScene gameScene) : base(gameScene)
     {
-        Ia = new BasicIa(gameScene);
+        if (Misc.Random.Next(0, 3) == 0)
+        {
+            Ia = new ShootingBasicIa(gameScene, this);
+        }
+        else
+        {
+            Ia = new BasicIa(gameScene);
+        }
         _gameScene = gameScene;
     }
     
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        Ia.Update();
+        Ia.Update(gameTime);
 
         Vector2 movementVector = Ia.MovementVector(Position);
         if (movementVector != Vector2.Zero)

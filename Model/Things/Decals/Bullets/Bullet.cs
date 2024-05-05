@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
+using roguelitri.Model.Scenes;
 using roguelitri.Model.Things.Decals.Mobs;
 using roguelitri.Model.Things.Decals.Mobs.Ia;
 using roguelitri.Service;
@@ -12,19 +13,19 @@ public abstract class Bullet : Mob
     public int Hits = 1;
     public const float HitBoxFactor = 0.8f;
     
-    public Bullet()
+    public Bullet(GameScene gameScene) : base(gameScene)
     {
         Solid = false;
         Texture = ResourcesManager.Gfx.Sprites.Bullet;
         Attack = 1;
-        Speed = 1;
+        Speed = 0.6f;
         CalculateHitBox();
     }
     
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        Ia.Update();
+        Ia.Update(gameTime);
         
         Vector2 movementVector = Ia.MovementVector(Position);
         if (movementVector != Vector2.Zero)

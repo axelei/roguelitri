@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using roguelitri.Model.Scenes;
+using roguelitri.Model.Things.Decals.Bullets;
 using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Service;
 using roguelitri.Util;
@@ -16,15 +18,15 @@ public class Player : Mob
     
     public const float InvulnerabilityTimeHit = 1000;
     
-    public Player(int playerIndex) : this()
+    public Player(GameScene gameScene, int playerIndex) : this(gameScene)
     {
         PlayerIndex = playerIndex;
     }
     
-    public Player() : base()
+    public Player(GameScene gameScene) : base(gameScene)
     {
         Important = true;
-        Speed = 0.3f;
+        Speed = 0.2f;
         Texture = ResourcesManager.Gfx.Player;
         CollisionFactor = 0.3f;
         CalculateHitBox();
@@ -50,6 +52,12 @@ public class Player : Mob
             moveVector.Normalize();
             Position += moveVector * Speed * gameTime.ElapsedGameTime.Milliseconds;
             FaceDirection = Misc.Angle(Vector2.Zero, moveVector);
+        }
+        
+        if (InputHelper.KeysPressed(Keys.F))
+        {
+            PlayerBullet playerBullet = new PlayerBullet(GameScene, HitBoxMoved.Center);
+            GameScene.Bullets.Add(playerBullet);
         }
     }
 

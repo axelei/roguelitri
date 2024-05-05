@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using roguelitri.Model.Scenes;
 using roguelitri.Model.Things.Decals.Mobs.Ia;
 using roguelitri.Util;
 
@@ -12,14 +13,21 @@ public class Mob : Decal
     public float Attack = 1f;
     public double FaceDirection = Math.PI / 2;
     
-
     protected IA Ia = new NoIa();
+    protected GameScene GameScene;
 
     public float CollisionFactor = 1f;
 
-    public Mob() : base()
+    public Mob(GameScene gameScene) : base()
     {
         Solid = true;
+        GameScene = gameScene;
+    }
+    
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+        Ia.Update(gameTime);
     }
 
     public virtual void Collide(Mob other, GameTime gameTime)

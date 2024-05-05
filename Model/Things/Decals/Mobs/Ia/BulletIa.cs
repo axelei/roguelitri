@@ -43,7 +43,7 @@ public class BulletIa : IA
         return new Vector2((float)Math.Sin(_angle), -(float)Math.Cos(_angle));
     }
 
-    public void Update()
+    public void Update(GameTime gameTime)
     {
         
     }

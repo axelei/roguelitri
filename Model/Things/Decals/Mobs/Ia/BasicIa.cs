@@ -19,7 +19,7 @@ public class BasicIa : IA
         return Misc.AngleVector(_gameScene.Player.Position, currentPosition);
     }
 
-    public void Update()
+    public virtual void Update(GameTime gameTime)
     {
         
     }

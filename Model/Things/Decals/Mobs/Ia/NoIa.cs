@@ -9,7 +9,7 @@ public class NoIa : IA
         return Vector2.Zero;
     }
 
-    public void Update()
+    public void Update(GameTime gameTime)
     {
     }
 }

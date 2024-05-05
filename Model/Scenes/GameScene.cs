@@ -52,7 +52,7 @@ public class GameScene : Scene
         Camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         Camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
 
-        Player = new Player(0);
+        Player = new Player(this, 0);
         Player.Leaf = Mobs.Add(Player.HitBox, Player);
 
         _debugText = Misc.AddText("", new Vector2(0, 25));
@@ -65,7 +65,7 @@ public class GameScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        UpdateControls(gameTime);
+        UpdateMobs(gameTime);
 
         Camera.Position = Player.Position;
         
@@ -172,7 +172,7 @@ public class GameScene : Scene
         }
     }
 
-    private void UpdateControls(GameTime gameTime)
+    private void UpdateMobs(GameTime gameTime)
     {
         if (_pauseCondition.Pressed())
         {
@@ -191,13 +191,6 @@ public class GameScene : Scene
             };
             enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
         }
-        
-        if (InputHelper.KeysPressed(Keys.F))
-        {
-            PlayerBullet playerBullet = new PlayerBullet(this, Player.HitBoxMoved.Center);
-            Bullets.Add(playerBullet);
-        }
-
         
     }
 
