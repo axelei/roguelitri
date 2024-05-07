@@ -22,7 +22,7 @@ public class Decal : Thing
     public int Width;
     public int Height;
     public int Frames = 1;
-    public bool HasSide, HasBack;
+    public int Front, Side, Back = -1;
     public int TextureOffsetX, TextureOffsetY;
     public double FaceDirection = Math.PI / 2;
     
@@ -32,7 +32,7 @@ public class Decal : Thing
         Height = Texture.Height;
         CalculateHitBox();
     }
-    
+
     public virtual void Update(GameTime gameTime)
     {
         if (Frames > 1)
@@ -41,42 +41,37 @@ public class Decal : Thing
             TextureOffsetX = Width * frame - 1;
         }
         CalculateOffsets();
-        
-
     }
 
     protected void CalculateOffsets()
     {
         // West
-        if (HasSide && (FaceDirection >= Math.PI / 4 && FaceDirection < 3 * Math.PI / 4))
+        if (Side > -1 && (FaceDirection >= Math.PI / 4 && FaceDirection < 3 * Math.PI / 4))
         {
-            TextureOffsetY = Height;
-            FlipX = true;
+            TextureOffsetY = Side * Height;
         }
         // East
-        else if (HasSide && (FaceDirection >= -3 * Math.PI / 4 && FaceDirection < -Math.PI / 4))
+        else if (Side > -1 && (FaceDirection >= -3 * Math.PI / 4 && FaceDirection < -Math.PI / 4))
         {
-            TextureOffsetY = Height;
-            FlipX = false;
+            TextureOffsetY = Side * Height;
         }
         // South
-        else if (FaceDirection >= -Math.PI / 4 && FaceDirection < Math.PI / 4)
+        else if (Front > -1 && (FaceDirection >= -Math.PI / 4 && FaceDirection < Math.PI / 4))
         {
-            TextureOffsetY = 0;
-            FlipX = false;
+            TextureOffsetY = Front * Height;
         }
         // North
-        else if (HasBack && (FaceDirection >= 3 * Math.PI / 4 || FaceDirection < -3 * Math.PI / 4))
+        else if (Back > -1 && (FaceDirection >= 3 * Math.PI / 4 || FaceDirection < -3 * Math.PI / 4))
         {
-            TextureOffsetY = Height * 2;
-            FlipX = false;
+            TextureOffsetY = Back * Height;
         }
-        // Defaults to south
+        // Default
         else
         {
-            FlipX = false;
             TextureOffsetY = 0;
         }
+        FlipX = FaceDirection >= -Math.PI / 2 + Math.PI / 2; // TODO Better flipX handling
+        
     }
 
     protected void CalculateHitBox()

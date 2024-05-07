@@ -37,6 +37,7 @@ public static class ResourcesManager
         public static class Enemies
         {
             public static Texture2D Bat;
+            public static Texture2D Cacodemon;
         }
         
         public static class Sprites
@@ -76,6 +77,7 @@ public static class ResourcesManager
         
         // Enemies
         Gfx.Enemies.Bat = content.Load<Texture2D>("gfx/enemies/bat01"); // https://pixelius-vita.itch.io/monster-fantasy-bat
+        Gfx.Enemies.Cacodemon = content.Load<Texture2D>("gfx/enemies/cacodemon"); // https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites
         
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");

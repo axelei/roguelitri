@@ -27,12 +27,14 @@ public class Enemy : Mob
             switch (monster.Texture)
             {
                 case "bat": Texture = ResourcesManager.Gfx.Enemies.Bat; break;
+                case "cacodemon": Texture = ResourcesManager.Gfx.Enemies.Cacodemon; break;
             }
             Width = monster.Width;
             Height = monster.Height;
             Frames = monster.Frames;
-            HasSide = monster.HasSide;
-            HasBack = monster.HasBack;
+            Front = monster.Front;
+            Side = monster.Side;
+            Back = monster.Back;
             Depth = monster.Depth;
             CalculateHitBox();
         }
@@ -73,31 +75,31 @@ public class Enemy : Mob
         {
             if (line.ToCharArray()[0] == ';') { continue; }
             string[] parts = line.Split(',');
+            int i = 0;
             Monster monster = new Monster
             {
-                Name = parts[0],
-                Texture = parts[1],
-                Frames = int.Parse(parts[2], CultureInfo.InvariantCulture),
-                Width = int.Parse(parts[3], CultureInfo.InvariantCulture),
-                Height = int.Parse(parts[4], CultureInfo.InvariantCulture),
-                HasSide = parts[5] == "1",
-                HasBack = parts[6] == "1",
-                Depth = float.Parse(parts[7], CultureInfo.InvariantCulture),
+                Name = parts[i++],
+                Texture = parts[i++],
+                Frames = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Width = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Height = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Front = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Side = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Back = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Depth = float.Parse(parts[i++], CultureInfo.InvariantCulture),
             };
             Monsters.Add(monster.Name, monster);
         }
     }
 
-    private struct Monster
+    private class Monster
     {
         // ;name,texture,frames,width,height,hasSide,hasBack,depth
         public string Name;
         public string Texture;
         public int Frames;
-        public int Width;
-        public int Height;
-        public bool HasSide;
-        public bool HasBack;
+        public int Width, Height;
+        public int Front, Side, Back = -1;
         public float Depth;
     }
     

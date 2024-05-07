@@ -190,6 +190,11 @@ public class GameScene : Scene
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
             };
             enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
+            enemy = new Enemy(this, "cacodemon")
+            {
+                Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
+            };
+            enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
         }
         
     }
