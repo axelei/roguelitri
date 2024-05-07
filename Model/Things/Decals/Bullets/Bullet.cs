@@ -31,7 +31,7 @@ public abstract class Bullet : Mob
         if (movementVector != Vector2.Zero)
         {
             movementVector.Normalize();
-            Position += movementVector * Speed * gameTime.ElapsedGameTime.Milliseconds;
+            Position += movementVector * Speed * (float) gameTime.ElapsedGameTime.TotalMilliseconds;
         }
     }
     

@@ -42,6 +42,7 @@ public class Game1 : Game
         IsMouseVisible = false;
         _globalKeysManager = new GlobalKeysManager(this);
         _nativeLibrary = nativeLibrary;
+        IsFixedTimeStep = false;
     }
 
     protected override void Initialize()
@@ -55,6 +56,7 @@ public class Game1 : Game
         Graphics.PreferredBackBufferWidth = Misc.NativeWidth;
         Graphics.PreferredBackBufferHeight = Misc.NativeHeight;
         Graphics.GraphicsProfile = GraphicsProfile.HiDef;
+        Graphics.SynchronizeWithVerticalRetrace = false;
         Graphics.ApplyChanges();
         
         Window.AllowUserResizing = true;

@@ -52,7 +52,7 @@ public class Player : Mob
         if (moveVector != Vector2.Zero)
         {
             moveVector.Normalize();
-            Position += moveVector * Speed * gameTime.ElapsedGameTime.Milliseconds;
+            Position += moveVector * Speed * (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             FaceDirection = Misc.Angle(Vector2.Zero, moveVector);
         }
         

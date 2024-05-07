@@ -25,6 +25,8 @@ public class Decal : Thing
     public int Front, Side, Back = -1;
     public int TextureOffsetX, TextureOffsetY;
     public double FaceDirection = Math.PI / 2;
+
+    private int _spawnTime = 0;
     
     public Decal() : base()
     {
@@ -35,9 +37,13 @@ public class Decal : Thing
 
     public virtual void Update(GameTime gameTime)
     {
+        if (_spawnTime == 0)
+        {
+            _spawnTime = gameTime.TotalGameTime.Milliseconds % 1000;
+        }
         if (Frames > 1)
         {
-            int frame = gameTime.TotalGameTime.Milliseconds / 100 % Frames;
+            int frame = (_spawnTime + gameTime.TotalGameTime.Milliseconds) / 100 % Frames;
             TextureOffsetX = Width * frame - 1;
         }
         CalculateOffsets();

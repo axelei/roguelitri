@@ -159,8 +159,8 @@ public class GameScene : Scene
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(mob.TextureOffsetX, mob.TextureOffsetY, mob.Width, mob.Height), 
                 mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, flipEffect, mob.Depth);
 #if DEBUG
-                Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
-                spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
+                //Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
+                //spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
 #endif
         }
 
@@ -185,12 +185,7 @@ public class GameScene : Scene
         if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
             Random rnd = new Random();
-            Enemy enemy = new Enemy(this, "bat")
-            {
-                Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
-            };
-            enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
-            enemy = new Enemy(this, "cacodemon")
+            Enemy enemy = new Enemy(this, "kobold")
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
             };

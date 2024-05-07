@@ -20,7 +20,7 @@ public class ShootingBasicIa : BasicIa
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        if (Misc.Random.Next(0, 3000 / gameTime.ElapsedGameTime.Milliseconds) == 0)
+        if (Misc.Random.Next(0, (int) (3000 / gameTime.ElapsedGameTime.TotalMilliseconds)) == 0)
         {
             EnemyBullet enemyBullet = new EnemyBullet(_gameScene, _mob.Position);
             _gameScene.Bullets.Add(enemyBullet);

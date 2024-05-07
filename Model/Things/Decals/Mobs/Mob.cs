@@ -36,7 +36,7 @@ public class Mob : Decal
     public virtual void Collide(Mob other, GameTime gameTime)
     {
         Vector2 collisionVector = Misc.AngleVector(Position, other.Position);
-        Position += collisionVector * CollisionFactor * gameTime.ElapsedGameTime.Milliseconds;
+        Position += collisionVector * CollisionFactor * (float) gameTime.ElapsedGameTime.TotalMilliseconds;
     }
     
 }
