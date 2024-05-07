@@ -70,7 +70,8 @@ public class Decal : Thing
         {
             TextureOffsetY = 0;
         }
-        FlipX = FaceDirection >= -Math.PI / 2 + Math.PI / 2; // TODO Better flipX handling
+
+        FlipX = (FaceDirection > 0 && FaceDirection < Math.PI); 
         
     }
 
