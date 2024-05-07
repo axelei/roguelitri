@@ -28,6 +28,7 @@ public class Enemy : Mob
             {
                 case "bat": Texture = ResourcesManager.Gfx.Enemies.Bat; break;
                 case "cacodemon": Texture = ResourcesManager.Gfx.Enemies.Cacodemon; break;
+                case "kobold": Texture = ResourcesManager.Gfx.Enemies.Kobold; break;
             }
             Width = monster.Width;
             Height = monster.Height;
