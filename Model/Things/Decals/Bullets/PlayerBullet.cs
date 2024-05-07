@@ -15,17 +15,23 @@ public class PlayerBullet : Bullet
         Ia = new BulletIa(gameScene, false, initialPosition);
     }
 
-    public override void Collide(Mob other, GameTime gameTime)
+    public override bool Collide(Mob other, GameTime gameTime)
     {
         if (other is Enemy enemy)
         {
-            enemy.Health -= Attack;
-            Hits--;
-            if (Hits <= 0)
+            enemy.Collide(this, gameTime);
             {
-                Dead = true;
+                Hits--;
+                if (Hits <= 0)
+                {
+                    Dead = true;
+                }
+
+                return true;
             }
         }
+
+        return false;
     }
     
 }

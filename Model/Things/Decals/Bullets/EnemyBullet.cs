@@ -17,17 +17,23 @@ public class EnemyBullet : Bullet
         Speed = 0.4f;
     }
     
-    public override void Collide(Mob other, GameTime gameTime)
+    public override bool Collide(Mob other, GameTime gameTime)
     {
         if (other is Player player)
         {
-            player.Health -= Attack;
-            Hits--;
-            if (Hits <= 0)
+            if (player.Collide(this, gameTime))
             {
-                Dead = true;
+                Hits--;
+                if (Hits <= 0)
+                {
+                    Dead = true;
+                }
+                return true;
             }
+
         }
+
+        return false;
     }
     
 }

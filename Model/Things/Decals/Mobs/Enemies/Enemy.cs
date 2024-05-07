@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using Microsoft.Xna.Framework;
 using roguelitri.Model.Scenes;
+using roguelitri.Model.Things.Decals.Bullets;
 using roguelitri.Model.Things.Decals.Mobs.Ia;
 using roguelitri.Service;
 using roguelitri.Util;
@@ -50,7 +51,17 @@ public class Enemy : Mob
         }
         _gameScene = gameScene;
     }
-    
+
+    public override bool Collide(Mob other, GameTime gameTime)
+    {
+        if (other is PlayerBullet bullet)
+        {
+            Health -= Math.Max(bullet.Attack, 0.01f);
+        }
+
+        return base.Collide(other, gameTime);
+    }
+
     public override void Update(GameTime gameTime)
     {
         Ia.Update(gameTime);

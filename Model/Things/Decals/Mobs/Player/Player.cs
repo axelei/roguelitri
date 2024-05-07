@@ -39,7 +39,7 @@ public class Player : Mob
         base.Update(gameTime);
         if (InvulnerabilityTime > 0)
         {
-            InvulnerabilityTime -= gameTime.ElapsedGameTime.Milliseconds;
+            InvulnerabilityTime -= (float) gameTime.ElapsedGameTime.TotalMilliseconds;
         }
         
         Vector2 moveVector = Vector2.Zero;
@@ -63,14 +63,17 @@ public class Player : Mob
         }
     }
 
-    public override void Collide(Mob mob, GameTime gameTime)
+    public override bool Collide(Mob mob, GameTime gameTime)
     {
         base.Collide(mob, gameTime);
-        if (!Invulnerable && mob is Enemy enemy)
+        if (!Invulnerable && mob is Enemy or EnemyBullet)
         {
-            Health -= Math.Max(enemy.Attack - Defense, 0.01f);
+            Health -= Math.Max(mob.Attack - Defense, 0.01f);
             InvulnerabilityTime = Math.Max(InvulnerabilityTime, InvulnerabilityTimeHit);
             ResourcesManager.Sfx.PlayerHit.Play();
+            return true;
         }
+
+        return false;
     }
 }
