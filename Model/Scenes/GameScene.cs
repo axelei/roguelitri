@@ -42,7 +42,7 @@ public class GameScene : Scene
     
     public override void Initialize()
     {
-        CurrLevel = LevelManager.LoadLevel("Content/lvl/test.json");
+        CurrLevel = LevelManager.LoadLevel("Content/data/lvl/test.json");
         CurrLevel.Random = new Random(CurrLevel.Seed);
 
         _playing = ResourcesManager.Music.IntoTheNight.Play();
@@ -71,12 +71,11 @@ public class GameScene : Scene
         
         foreach (Mob mob in Mobs.ToList())
         {
-            if (MobIsFarUnimportant(mob) || mob.Dead)
+            mob.Update(gameTime);
+            if ((MobIsFarUnimportant(mob) || mob.Dead) && mob is not Things.Decals.Mobs.Player.Player)
             {
                 Mobs.Remove(mob.Leaf);
-                continue;
             }
-            mob.Update(gameTime);
         }
         foreach (Mob mob in Mobs.ToList().Where(mob => mob.Solid))
         {
@@ -92,7 +91,7 @@ public class GameScene : Scene
             bullet.Update(gameTime);
             CalculateBulletCollisions(bullet, gameTime);
 
-            if (bullet.Dead)
+            if (MobIsFarUnimportant(bullet) || bullet.Dead)
             {
                 Bullets.Remove(bullet);
             }
@@ -156,8 +155,9 @@ public class GameScene : Scene
         RectangleF cameraRect = new RectangleF(Camera.Position.X - Misc.NativeWidth / 2f, Camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
         foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
         {
-            spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(0,0,mob.Texture.Width, mob.Texture.Height), 
-                mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, SpriteEffects.None, mob.Depth);
+            SpriteEffects flipEffect = mob.FlipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(mob.TextureOffsetX, mob.TextureOffsetY, mob.Width, mob.Height), 
+                mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, flipEffect, mob.Depth);
 #if DEBUG
                 Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
                 spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
@@ -185,9 +185,9 @@ public class GameScene : Scene
         if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
             Random rnd = new Random();
-            Enemy enemy = new Enemy(this)
+            Enemy enemy = new Enemy(this, "bat")
             {
-                Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400))
+                Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
             };
             enemy.Leaf = Mobs.Add(enemy.HitBoxMoved, enemy);
         }
@@ -196,7 +196,10 @@ public class GameScene : Scene
 
     private bool MobIsFarUnimportant(Mob mob)
     {
-        return !mob.Important && Vector2.Distance(mob.Position, Player.Position) > Misc.NativeWidth * 2;
+        return mob.Position.X > Camera.Position.X + Misc.NativeWidth * 2f 
+            || mob.Position.X < Camera.Position.X - Misc.NativeWidth * 2f 
+            || mob.Position.Y > Camera.Position.Y + Misc.NativeHeight * 2f 
+            || mob.Position.Y < Camera.Position.Y - Misc.NativeHeight * 2f;
     }
 
     private void CalculateCollisions(Mob mob, GameTime gameTime)

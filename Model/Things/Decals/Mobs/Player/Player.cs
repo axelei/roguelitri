@@ -28,6 +28,8 @@ public class Player : Mob
         Important = true;
         Speed = 0.2f;
         Texture = ResourcesManager.Gfx.Player;
+        Width = Texture.Width;
+        Height = Texture.Height;
         CollisionFactor = 0.3f;
         CalculateHitBox();
     }

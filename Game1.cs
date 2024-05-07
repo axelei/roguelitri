@@ -9,6 +9,7 @@ using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
+using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Service;
 using roguelitri.Util;
 using InputHelper = Apos.Input.InputHelper;
@@ -82,6 +83,8 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         ResourcesManager.LoadContent(Content);
+        
+        Enemy.LoadEnemies();
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         

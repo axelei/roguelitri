@@ -33,6 +33,11 @@ public static class ResourcesManager
             public static Texture2D Logo;
             public static Texture2D Background;
         }
+
+        public static class Enemies
+        {
+            public static Texture2D Bat;
+        }
         
         public static class Sprites
         {
@@ -68,6 +73,9 @@ public static class ResourcesManager
         // Title
         Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo");
         Gfx.Title.Background = LoadFromFile(Game1.ContentFolder + "/gfx/raw/title_background.png");
+        
+        // Enemies
+        Gfx.Enemies.Bat = content.Load<Texture2D>("gfx/enemies/bat01"); // https://pixelius-vita.itch.io/monster-fantasy-bat
         
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");
