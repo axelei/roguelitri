@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using roguelitri.Util;
@@ -76,8 +77,7 @@ public class Decal : Thing
         {
             TextureOffsetY = 0;
         }
-
-        FlipX = (FaceDirection > 0 && FaceDirection < Math.PI); 
+        FlipX = (FaceDirection < -Math.PI / 2 || FaceDirection > Math.PI / 2); 
         
     }
 

@@ -87,7 +87,7 @@ public class Enemy : Mob
             movementVector.Normalize();
             Vector2 oldPosition = Position;
             Position += movementVector * Speed * (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            FaceDirection = Misc.Angle(Position, oldPosition) - Math.PI / 2;
+            FaceDirection = Misc.Angle(Position, oldPosition);
         }
         
         base.Update(gameTime);
