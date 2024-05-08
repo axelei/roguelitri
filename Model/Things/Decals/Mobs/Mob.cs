@@ -15,7 +15,7 @@ public class Mob : Decal
     protected IA Ia = new NoIa();
     protected GameScene GameScene;
 
-    public float CollisionFactor = 1f;
+    public float CollisionFactor = 0.6f;
 
     public Mob(GameScene gameScene) : base()
     {

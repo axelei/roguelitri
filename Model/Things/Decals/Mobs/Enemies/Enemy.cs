@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.Xna.Framework;
 using roguelitri.Model.Scenes;
@@ -38,16 +39,30 @@ public class Enemy : Mob
             Side = monster.Side;
             Back = monster.Back;
             Depth = monster.Depth;
+            switch (monster.Ia)
+            {
+                case "no": Ia = new NoIa(); break;
+                case "basic": Ia = new BasicIa(gameScene); break;
+                case "shooting": Ia = new ShootingBasicIa(gameScene, this); break;
+            }
+            Important = monster.Boss == 1;
+            Health = monster.Health;
+            Speed = monster.Speed;
+            Attack = monster.Attack;
+            Color = monster.Color;
+            Scale = new Vector2(monster.Size);
             CalculateHitBox();
-        }
-
-        if (Misc.Random.Next(0, 3) == 0)
-        {
-            Ia = new ShootingBasicIa(gameScene, this);
         }
         else
         {
-            Ia = new BasicIa(gameScene);
+            if (Misc.Random.Next(0, 3) == 0)
+            {
+                Ia = new ShootingBasicIa(gameScene, this);
+            }
+            else
+            {
+                Ia = new BasicIa(gameScene);
+            }
         }
         _gameScene = gameScene;
     }
@@ -56,7 +71,7 @@ public class Enemy : Mob
     {
         if (other is PlayerBullet bullet)
         {
-            Health -= Math.Max(bullet.Attack, 0.01f);
+            Health -= Math.Min(bullet.Attack, 0.01f);
         }
 
         return base.Collide(other, gameTime);
@@ -80,6 +95,7 @@ public class Enemy : Mob
 
     public static void LoadEnemies()
     {
+        Logger.Log("Loading enemies...");
         const int bufferSize = 128;
         using var fileStream = File.OpenRead("Content/data/monsters.csv");
         using var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, bufferSize);
@@ -99,6 +115,13 @@ public class Enemy : Mob
                 Side = int.Parse(parts[i++], CultureInfo.InvariantCulture),
                 Back = int.Parse(parts[i++], CultureInfo.InvariantCulture),
                 Depth = float.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Ia = parts[i++],
+                Boss = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Health = int.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Speed = float.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Attack = float.Parse(parts[i++], CultureInfo.InvariantCulture),
+                Color = GetColor(parts[i++]),
+                Size = float.Parse(parts[i], CultureInfo.InvariantCulture)
             };
             Monsters.Add(monster.Name, monster);
         }
@@ -113,6 +136,22 @@ public class Enemy : Mob
         public int Width, Height;
         public int Front, Side, Back = -1;
         public float Depth;
+        public string Ia = "basic";
+        public int Boss;
+        public int Health = 100;
+        public float Speed = 0.1f;
+        public float Attack = 1;
+        public Color Color;
+        public float Size;
+    }
+    
+    private static Color GetColor(string color)
+    {
+        int red = int.Parse(color.Substring(0, 2), NumberStyles.HexNumber);
+        int green = int.Parse(color.Substring(2, 2), NumberStyles.HexNumber);
+        int blue = int.Parse(color.Substring(4, 2), NumberStyles.HexNumber);
+        int alpha = int.Parse(color.Substring(6, 2), NumberStyles.HexNumber);
+        return new Color(red, green, blue, alpha);
     }
     
 }

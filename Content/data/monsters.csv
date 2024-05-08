@@ -1,4 +1,4 @@
-﻿;name,texture,frames,width,height,front,side,back,depth
-bat,bat,8,64,64,0,1,-1,0.5
-cacodemon,cacodemon,6,64,64,-1,0,-1,0.5
-kobold,kobold,7,64,64,-1,0,-1,0
+﻿;name,texture,frames,width,height,front,side,back,depth,ia,boss,health,speed,attack,color,size
+bat,bat,8,64,64,0,1,-1,0.5,basic,0,100,0.1,1,FFFFFFFF,1
+cacodemon,cacodemon,6,64,64,-1,0,-1,0.5,basic,0,100,0.1,1,FFFFFFFF,1
+kobold,kobold,7,64,64,-1,0,-1,0,basic,0,100,0.1,1,FFFFFFFF,1
