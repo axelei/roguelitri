@@ -11,8 +11,8 @@ public class Mob : Decal
     public float Health = 100;
     public float Speed = 0.1f;
     public float Attack = 1f;
+    public IA Ia = new NoIa();
     
-    protected IA Ia = new NoIa();
     protected GameScene GameScene;
 
     public float CollisionFactor = 0.6f;

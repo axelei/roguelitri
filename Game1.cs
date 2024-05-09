@@ -86,7 +86,7 @@ public class Game1 : Game
     {
         ResourcesManager.LoadContent(Content);
         
-        Enemy.LoadEnemies();
+        EnemiesManager.LoadEnemies();
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
