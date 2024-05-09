@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Apos.Input;
-using Apos.Shapes;
 using Apos.Spatial;
 using FmodForFoxes;
 using Gum.Wireframe;
@@ -32,7 +31,6 @@ public class GameScene : Scene
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _debugText;
-    private readonly ShapeBatch _sb = new (Game1.Graphics.GraphicsDevice, SceneManager.Content);
     
     public readonly AABBTree<Mob> Mobs = new (1024, 0, 1024);
     public readonly HashSet<Bullet> Bullets = new ();
@@ -114,13 +112,6 @@ public class GameScene : Scene
         
         spriteBatch.End();
 
-#if DEBUG
-        _sb.Begin(view: Camera.TransformationMatrix);
-        foreach (RectangleF rect in Mobs.DebugAllNodes()) {
-            _sb.BorderRectangle(rect.TopLeft, rect.Size, Color.White * 0.3f);
-        }
-        _sb.End();
-#endif
     }
 
     public override void Dispose()
