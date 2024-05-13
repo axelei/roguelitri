@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
+using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Util;
 
 namespace roguelitri.Model.Things.Decals;
@@ -53,22 +54,22 @@ public class Decal : Thing
     protected void CalculateOffsets()
     {
         // West
-        if (Side > -1 && (FaceDirection >= Math.PI / 4 && FaceDirection < 3 * Math.PI / 4))
+        if (Side > -1 && (FaceDirection >= -3 * Math.PI / 4 && FaceDirection > 3 * Math.PI / 4))
         {
             TextureOffsetY = Side * Height;
         }
         // East
-        else if (Side > -1 && (FaceDirection >= -3 * Math.PI / 4 && FaceDirection < -Math.PI / 4))
+        else if (Side > -1 && (FaceDirection >= -Math.PI / 4 && FaceDirection < Math.PI / 4))
         {
             TextureOffsetY = Side * Height;
         }
         // South
-        else if (Front > -1 && (FaceDirection >= -Math.PI / 4 && FaceDirection < Math.PI / 4))
+        else if (Front > -1 && (FaceDirection >= Math.PI / 4 && FaceDirection < 3 * Math.PI / 4))
         {
             TextureOffsetY = Front * Height;
         }
         // North
-        else if (Back > -1 && (FaceDirection >= 3 * Math.PI / 4 || FaceDirection < -3 * Math.PI / 4))
+        else if (Back > -1 && (FaceDirection >= -3 * Math.PI / 4 && FaceDirection < -Math.PI / 4))
         {
             TextureOffsetY = Back * Height;
         }
