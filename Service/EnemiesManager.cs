@@ -60,6 +60,7 @@ public static class EnemiesManager
             case "bat": enemy.Texture = ResourcesManager.Gfx.Enemies.Bat; break;
             case "cacodemon": enemy.Texture = ResourcesManager.Gfx.Enemies.Cacodemon; break;
             case "kobold": enemy.Texture = ResourcesManager.Gfx.Enemies.Kobold; break;
+            case "zombie": enemy.Texture = ResourcesManager.Gfx.Enemies.Zombie; break;
         }
         enemy.Width = monster.Width;
         enemy.Height = monster.Height;

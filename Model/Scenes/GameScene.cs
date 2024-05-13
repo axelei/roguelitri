@@ -176,7 +176,7 @@ public class GameScene : Scene
         if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
             Random rnd = new Random();
-            Enemy enemy = new Enemy(this, "kobold")
+            Enemy enemy = new Enemy(this, "zombie")
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
             };

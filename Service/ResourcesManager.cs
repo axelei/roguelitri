@@ -39,6 +39,7 @@ public static class ResourcesManager
             public static Texture2D Bat;
             public static Texture2D Cacodemon;
             public static Texture2D Kobold;
+            public static Texture2D Zombie;
         }
         
         public static class Sprites
@@ -80,6 +81,7 @@ public static class ResourcesManager
         Gfx.Enemies.Bat = content.Load<Texture2D>("gfx/enemies/bat01"); // https://pixelius-vita.itch.io/monster-fantasy-bat
         Gfx.Enemies.Cacodemon = content.Load<Texture2D>("gfx/enemies/cacodemon"); // https://elthen.itch.io/2d-pixel-art-cacodaemon-sprites
         Gfx.Enemies.Kobold = content.Load<Texture2D>("gfx/enemies/kobold"); // https://xzany.itch.io/kobold-warrior-2d-pixel-art
+        Gfx.Enemies.Zombie = content.Load<Texture2D>("gfx/enemies/zombie"); // https://opengameart.org/content/lpc-zombie
         
         // Textures
         Gfx.Textures.Default = content.Load<Texture2D>("gfx/default");

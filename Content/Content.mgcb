@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:gfx/enemies/bat01.png
 
+#begin gfx/enemies/cacodemon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gfx/enemies/cacodemon.png
+
 #begin gfx/enemies/kobold.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -61,7 +73,7 @@
 /processorParam:TextureFormat=Color
 /build:gfx/enemies/kobold.png
 
-#begin gfx/enemies/cacodemon.png
+#begin gfx/enemies/zombie.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gfx/enemies/cacodemon.png
+/build:gfx/enemies/zombie.png
 
 #begin gfx/player.png
 /importer:TextureImporter
