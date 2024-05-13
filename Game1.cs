@@ -1,15 +1,13 @@
 ﻿using System;
-using Apos.Input;
-using FmodForFoxes;
 using Gum.DataTypes;
 using Gum.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum.GueDeriving;
+using MonoSound;
 using RenderingLibrary;
 using roguelitri.Model.Save;
 using roguelitri.Model.Scenes;
-using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Service;
 using roguelitri.Util;
 using InputHelper = Apos.Input.InputHelper;
@@ -26,7 +24,6 @@ public class Game1 : Game
     public static GumProjectSave GumProject { get; private set; }
     
     private SpriteBatch _spriteBatch;
-    private readonly INativeFmodLibrary _nativeLibrary;
     public static RenderTarget2D RenderTarget; // As shown in https://www.youtube.com/watch?v=Zla4q0Z6Zwc
     private Rectangle _renderDestination;
 
@@ -35,13 +32,12 @@ public class Game1 : Game
     private TextRuntime _debugText;
 
 
-    public Game1(INativeFmodLibrary nativeLibrary)
+    public Game1()
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
         _globalKeysManager = new GlobalKeysManager(this);
-        _nativeLibrary = nativeLibrary;
         IsFixedTimeStep = false;
     }
 
@@ -75,7 +71,7 @@ public class Game1 : Game
         ObjectFinder.Self.GumProjectSave = GumProject;
         GumProject.Initialize();
         
-        FmodManager.Init(_nativeLibrary, FmodInitMode.Core, ContentFolder);
+        MonoSoundLibrary.Init(this);
         
         _debugText = Misc.AddText("FPS: -", new Vector2(0, 0));
         
@@ -104,7 +100,6 @@ public class Game1 : Game
         _globalKeysManager.Update();
 
         SystemManagers.Default.Activity(gameTime.TotalGameTime.TotalSeconds);
-        FmodManager.Update();
         
         SceneManager.Update(gameTime);
 
@@ -143,8 +138,8 @@ public class Game1 : Game
             SaveManager.SaveSettings(Settings);
         }
         
+        MonoSoundLibrary.DeInit();
         Console.WriteLine("Another fine release from Enloartolameza Studios!");
-        FmodManager.Unload();
         Logger.Log("Finished shutting down.");
         Logger.Dispose();
         Environment.Exit(Environment.ExitCode);

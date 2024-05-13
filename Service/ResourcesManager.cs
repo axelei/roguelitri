@@ -1,9 +1,10 @@
 ﻿using System.IO;
-using FmodForFoxes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoSound;
+using MonoSound.Streaming;
 
 namespace roguelitri.Service;
 
@@ -21,7 +22,7 @@ public static class ResourcesManager
 
     public static class Music
     {
-        public static Sound IntoTheNight;
+        public static StreamPackage TheExplorer;
     }
 
     public static class Gfx
@@ -69,7 +70,7 @@ public static class ResourcesManager
         Rectangle.SetData(new[] { Color.White });
         
         //// Music
-        Music.IntoTheNight = CoreSystem.LoadStreamedSound("music/The_Spin_Wires_-_Into_The_Night.mp3");
+        Music.TheExplorer = StreamLoader.GetStreamedSound("Content/music/TheExplorer.ogg", looping: true);
 
         //// Gfx
         Gfx.Player = content.Load<Texture2D>("gfx/player");

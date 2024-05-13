@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
-using roguelitri.Model.Things.Decals.Mobs.Enemies;
 using roguelitri.Util;
 
 namespace roguelitri.Model.Things.Decals;

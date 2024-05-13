@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Apos.Input;
 using Apos.Spatial;
-using FmodForFoxes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,7 +26,7 @@ public class GameScene : Scene
     public Level CurrLevel { get; private set; }
     public Camera2D Camera { get; private set; }
     
-    private Channel _playing;
+    //private Channel _playing;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _debugText;
@@ -43,9 +42,7 @@ public class GameScene : Scene
         CurrLevel = LevelManager.LoadLevel("Content/data/lvl/test.json");
         CurrLevel.Random = new Random(CurrLevel.Seed);
 
-        _playing = ResourcesManager.Music.IntoTheNight.Play();
-        _playing.Volume = Game1.Settings.MusicVolume;
-        _playing.Looping = true;
+        ResourcesManager.Music.TheExplorer.Play();
         
         Camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         Camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
