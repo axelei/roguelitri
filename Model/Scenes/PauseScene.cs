@@ -28,12 +28,15 @@ public class PauseScene : Scene
         _pauseText.HorizontalAlignment = HorizontalAlignment.Center;
         _pauseText.VerticalAlignment = VerticalAlignment.Center;
         
+        MusicManager.Pause();
+        
     }
 
     public override void Update(GameTime gameTime)
     {
         if (_unpauseCondition.Pressed())
         {
+            MusicManager.Resume();
             SceneManager.PopScene();
         }
     }

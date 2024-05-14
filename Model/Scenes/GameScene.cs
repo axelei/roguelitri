@@ -27,7 +27,6 @@ public class GameScene : Scene
     public Level CurrLevel { get; private set; }
     public Camera2D Camera { get; private set; }
     
-    //private Channel _playing;
     private readonly HashSet<GraphicalUiElement> _uiElements = new ();
 
     private TextRuntime _debugText;
@@ -43,8 +42,7 @@ public class GameScene : Scene
         CurrLevel = LevelManager.LoadLevel("Content/data/lvl/test.json");
         CurrLevel.Random = new Random(CurrLevel.Seed);
 
-        ResourcesManager.Music.TheExplorer.Play();
-        ResourcesManager.Music.TheExplorer.Metrics.Volume = Game1.Settings.MusicVolume;
+        MusicManager.Play(ResourcesManager.Music.TheExplorer);
         
         Camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         Camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
