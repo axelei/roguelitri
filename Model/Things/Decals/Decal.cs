@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using roguelitri.Util;
@@ -12,6 +13,7 @@ public class Decal : Thing
     private const float HeightHitBoxFactor = 0.65f;
 
     public RectangleF HitBox;
+    public int HitBoxWidth, HitBoxHeight;
     public RectangleF HitBoxMoved => Misc.MoveRect(HitBox, Position);
     
     public bool Solid;
@@ -82,10 +84,10 @@ public class Decal : Thing
 
     protected void CalculateHitBox()
     {
-        float collisionBoxHeight = Height * HitBoxFactor * HeightHitBoxFactor;
-        float collisionBoxWidth = Width * HitBoxFactor;
-        float collisionBoxStartTop = Height - collisionBoxHeight;
-        float collisionBoxStartLeft = (Width - collisionBoxWidth) / 2;
+        float collisionBoxHeight = Height * HitBoxFactor * HeightHitBoxFactor * (HitBoxHeight / 100f) * Scale.X;
+        float collisionBoxWidth = Width * HitBoxFactor * (HitBoxWidth / 100f) * Scale.Y;
+        float collisionBoxStartTop = Height * Scale.Y - collisionBoxHeight;
+        float collisionBoxStartLeft = (Width * Scale.X - collisionBoxWidth) / 2;
         HitBox = new RectangleF(collisionBoxStartLeft, collisionBoxStartTop, collisionBoxWidth, collisionBoxHeight);
     }
 }

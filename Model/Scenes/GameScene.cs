@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGameGum.GueDeriving;
+using roguelitri.Model.Save;
 using roguelitri.Model.Things.Decals.Bullets;
 using roguelitri.Model.Things.Decals.Mobs;
 using roguelitri.Model.Things.Decals.Mobs.Enemies;
@@ -43,6 +44,7 @@ public class GameScene : Scene
         CurrLevel.Random = new Random(CurrLevel.Seed);
 
         ResourcesManager.Music.TheExplorer.Play();
+        ResourcesManager.Music.TheExplorer.Metrics.Volume = Game1.Settings.MusicVolume;
         
         Camera = new Camera2D(Misc.NativeWidth, Misc.NativeHeight);
         Camera.Origin = new Vector2(Misc.NativeWidth / 2f, Misc.NativeHeight / 2f);
@@ -141,7 +143,7 @@ public class GameScene : Scene
     private void DrawThings(SpriteBatch spriteBatch)
     {
         RectangleF cameraRect = new RectangleF(Camera.Position.X - Misc.NativeWidth / 2f, Camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
-        foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
+        foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y)) //TODO order by depth not working for big mobs
         {
             SpriteEffects flipEffect = mob.FlipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(mob.TextureOffsetX, mob.TextureOffsetY, mob.Width, mob.Height), 
@@ -173,7 +175,7 @@ public class GameScene : Scene
         if (_createEnemyCondition.Pressed() || InputHelper.KeysPressed(Keys.R))
         {
             Random rnd = new Random();
-            Enemy enemy = new Enemy(this, "zombie")
+            Enemy enemy = new Enemy(this, "zombieBig")
             {
                 Position = Player.Position + new Vector2(rnd.Next(-400, 400), rnd.Next(-400, 400)),
             };

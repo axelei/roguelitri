@@ -46,7 +46,7 @@ public class Enemy : Mob
     {
         Ia.Update(gameTime);
 
-        Vector2 movementVector = Ia.MovementVector(Position);
+        Vector2 movementVector = Ia.MovementVector(HitBoxMoved.Center);
         if (movementVector != Vector2.Zero)
         {
             movementVector.Normalize();

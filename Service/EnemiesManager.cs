@@ -43,7 +43,9 @@ public static class EnemiesManager
                 Speed = ParseFloat(parts[i++]),
                 Attack = ParseFloat(parts[i++]),
                 Color = GetColor(parts[i++]),
-                Size = ParseFloat(parts[i++])
+                Size = ParseFloat(parts[i++]),
+                HitBoxWidth = ParseInt(parts[i++]),
+                HitBoxHeight = ParseInt(parts[i++])
             };
             Monsters.Add(monster.Name, monster);
         }
@@ -60,7 +62,7 @@ public static class EnemiesManager
             case "bat": enemy.Texture = ResourcesManager.Gfx.Enemies.Bat; break;
             case "cacodemon": enemy.Texture = ResourcesManager.Gfx.Enemies.Cacodemon; break;
             case "kobold": enemy.Texture = ResourcesManager.Gfx.Enemies.Kobold; break;
-            case "zombie": enemy.Texture = ResourcesManager.Gfx.Enemies.Zombie; break;
+            case "zombie": case "zombieBig": enemy.Texture = ResourcesManager.Gfx.Enemies.Zombie; break;
         }
         enemy.Width = monster.Width;
         enemy.Height = monster.Height;
@@ -81,6 +83,8 @@ public static class EnemiesManager
         enemy.Attack = monster.Attack;
         enemy.Color = monster.Color;
         enemy.Scale = new Vector2(monster.Size);
+        enemy.HitBoxWidth = monster.HitBoxWidth;
+        enemy.HitBoxHeight = monster.HitBoxHeight;
     }
     
     private static Color GetColor(string color)

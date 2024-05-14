@@ -16,7 +16,7 @@ public class BasicIa : IA
     
     public Vector2 MovementVector(Vector2 currentPosition)
     {
-        return Misc.AngleVector(_gameScene.Player.Position, currentPosition);
+        return Misc.AngleVector(_gameScene.Player.HitBoxMoved.Center, currentPosition);
     }
 
     public virtual void Update(GameTime gameTime)

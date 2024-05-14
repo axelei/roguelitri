@@ -17,4 +17,5 @@ public class Monster
     public float Attack = 1;
     public Color Color = Color.White;
     public float Size = 1f;
+    public int HitBoxWidth, HitBoxHeight;
 }
