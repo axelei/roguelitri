@@ -76,7 +76,7 @@ public static class ResourcesManager
         Gfx.Player = content.Load<Texture2D>("gfx/player");
         // Title
         Gfx.Title.Logo = content.Load<Texture2D>("gfx/title/title_logo");
-        Gfx.Title.Background = LoadFromFile(Game1.ContentFolder + "/gfx/raw/title_background.png");
+        Gfx.Title.Background = LoadFromFile("gfx/raw/title_background.png");
         
         // Enemies
         Gfx.Enemies.Bat = content.Load<Texture2D>("gfx/enemies/bat01"); // https://pixelius-vita.itch.io/monster-fantasy-bat
@@ -98,9 +98,7 @@ public static class ResourcesManager
 
     private static Texture2D LoadFromFile(string path)
     {
-        FileStream fileStream = new FileStream(path, FileMode.Open);
-        Texture2D texture = Texture2D.FromStream(Game1.Graphics.GraphicsDevice, fileStream);
-        fileStream.Dispose();
-        return texture;
+        using var fileStream = new FileStream($"{Game1.ContentFolder}/{path}", FileMode.Open);
+        return Texture2D.FromStream(Game1.Graphics.GraphicsDevice, fileStream);
     }
 }

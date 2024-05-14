@@ -60,28 +60,28 @@ public class GameScene : Scene
 
     public override void Update(GameTime gameTime)
     {
+        ProcessKeys();
         UpdateMobs(gameTime);
 
         Camera.Position = Player.Position;
         
-        foreach (Mob mob in Mobs.ToList())
+        var mobsToUpdate = Mobs.ToList();
+        foreach (Mob mob in mobsToUpdate)
         {
             mob.Update(gameTime);
             if ((MobIsFarUnimportant(mob) || mob.Dead) && mob is not Things.Decals.Mobs.Player.Player)
             {
                 Mobs.Remove(mob.Leaf);
             }
-        }
-        foreach (Mob mob in Mobs.ToList().Where(mob => mob.Solid))
-        {
-            Mobs.Update(mob.Leaf, mob.HitBoxMoved);
-        }
-        foreach (Mob mob in Mobs.Where(mob => mob.Solid))
-        {
-            CalculateCollisions(mob, gameTime);
+            else if (mob.Solid)
+            {
+                Mobs.Update(mob.Leaf, mob.HitBoxMoved);
+                CalculateCollisions(mob, gameTime);
+            }
         }
 
-        foreach (Bullet bullet in Bullets.ToList())
+        var bulletsToUpdate = Bullets.ToList();
+        foreach (Bullet bullet in bulletsToUpdate)
         {
             bullet.Update(gameTime);
             CalculateBulletCollisions(bullet, gameTime);
@@ -141,31 +141,31 @@ public class GameScene : Scene
     private void DrawThings(SpriteBatch spriteBatch)
     {
         RectangleF cameraRect = new RectangleF(Camera.Position.X - Misc.NativeWidth / 2f, Camera.Position.Y - Misc.NativeHeight / 2f, Misc.NativeWidth, Misc.NativeHeight);
-        foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y)) //TODO order by depth not working for big mobs
+        foreach (Mob mob in Mobs.Query(cameraRect).OrderByDescending(mob => mob.Depth).ThenBy(mob => mob.Position.Y))
         {
             SpriteEffects flipEffect = mob.FlipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(mob.Texture, mob.Position, new Rectangle(mob.TextureOffsetX, mob.TextureOffsetY, mob.Width, mob.Height), 
                 mob.Color, mob.Rotation, Vector2.Zero, mob.Scale, flipEffect, mob.Depth);
-#if DEBUG
-                //Rectangle pos = Misc.MoveRect(mob.HitBox, mob.Position).ToRectangle();
-                //spriteBatch.Draw(ResourcesManager.Rectangle, pos, Color.Red * 0.2f);
-#endif
         }
 
         foreach (Bullet bullet in Bullets)
         {
             spriteBatch.Draw(bullet.Texture, bullet.Position,
                 new Rectangle(0, 0, bullet.Texture.Width, bullet.Texture.Height),
-                bullet.Color, bullet.Rotation, Vector2.Zero, bullet.Scale, SpriteEffects.None, bullet.Depth);
+                bullet.Color, bullet.Rotation, Vector2.Zero, bullet.Scale, SpriteEffects.None, bullet.Depth);;
         }
     }
 
-    private void UpdateMobs(GameTime gameTime)
+    private void ProcessKeys()
     {
         if (_pauseCondition.Pressed())
         {
             SceneManager.PushScene(new PauseScene(Misc.GetScreenshot()));
         }
+    }
+
+    private void UpdateMobs(GameTime gameTime)
+    {
         
         Player.Update(gameTime);
         Mobs.Update(Player.Leaf, Player.HitBoxMoved);
